@@ -1,0 +1,76 @@
+/* Estilos generales */
+body {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+    background-color: #f5f1d1; /* Color de fondo similar al de tu imagen */
+}
+
+/* Barra de navegación */
+header {
+    background-color: #f5f1d1; /* Fondo de la barra */
+    padding: 10px 0;
+}
+
+.nav-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1800px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* Logo */
+.logo-img {
+    width: 128px; /* Ajusta el tamaño del logo */
+    height: auto;
+}
+
+/* Enlaces de navegación */
+nav {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.nav-links {
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 40px;
+    margin: 0;
+    padding: 0;
+}
+
+.nav-links li {
+    display: inline;
+}
+
+.nav-links a {
+    color: #333;
+    text-decoration: none;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+}
+
+.nav-links a:hover {
+    text-decoration: underline;
+}
+
+/* Iconos de usuario y carrito */
+.icon-user:before, .icon-cart:before {
+    vertical-align: middle; /* Alinea el icono con el texto */
+    font-size: 1.2em; /* Ajusta el tamaño del emoji para que se vea en línea con el texto */
+    margin-right: 4px; /* Espacio entre el icono y el texto */
+}
+
+/* Iconos específicos */
+.icon-user:before {
+    content: "\1F464"; /* Unicode para el icono de usuario */
+}
+
+.icon-cart:before {
+    content: "\1F6D2"; /* Unicode para el icono de carrito */
+}
