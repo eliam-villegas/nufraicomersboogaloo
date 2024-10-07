@@ -73,7 +73,7 @@ def login():
         else:
             return redirect(url_for('login'))
     
-    return render_template(url_for('usuario'))
+    return render_template('usuario.html')
  
 if __name__ == '__main__':
     app.run(debug=True)
