@@ -1,4 +1,5 @@
 from flask import Flask, render_template, jsonify, request, redirect, url_for
+
 from app.database import get_db
 from bson.objectid import ObjectId
 
@@ -23,6 +24,13 @@ def obtener_productos():
 def productos():
     return render_template('productos.html')
 
+@app.route('/usuario')
+def usuario():
+    return render_template('usuario.html')
+
+@app.route('/logged')
+def logged():
+    return render_template('logged.html')
 # Ruta para obtener un producto por su ID
 @app.route('/api/producto/<id>', methods=['GET'])
 def obtener_producto(id):
@@ -66,6 +74,21 @@ def agregar_producto():
     # Si es una solicitud GET, renderiza la página de agregar productos
     return render_template('agregar_producto.html')
 
+#login handler
+@app.route('/login', methods=['GET', 'POST'])  # no se si sirve esto 
+def login():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+
+        if username == 'user' and password == '1234':
+            return redirect(url_for('logged'))
+        else:
+            return redirect(url_for('login'))
+    
+    return render_template('usuario.html')
+ 
+=======
 # Ruta para actualizar un producto (sin pasar ID en la URL)
 @app.route('/actualizar_producto', methods=['GET', 'POST'])
 def actualizar_producto():
