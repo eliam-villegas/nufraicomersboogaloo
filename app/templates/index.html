@@ -1,68 +1,34 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Barra de Navegación</title>
-    <!-- Enlace al archivo CSS -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='navbar.css') }}">
-</head>
-<body>
+{% extends "base.html" %}
 
-    <!-- Barra de navegación -->
-    <header>
-        <div class="nav-container">
-            <div class="logo">
-                <!-- Aquí va el logo -->
-                <a href="{{ url_for('index') }}">
-                <img src="https://raw.githubusercontent.com/eliam-villegas/nufraicomers/refs/heads/main/imagenes/nufra_logo-removebg-preview.png" alt="Logo" class="logo-img">
-                </a>
-            </div>
-            <nav>
-                <ul class="nav-links">
-                    <li><a href="/productos">Tienda</a></li>
-                    <li><a href="/usuario"><i class="icon-user"></i>Usuario</a></li>
-                    <li><a href="#"><i class="icon-cart"></i>Carrito</a></li>
-                </ul>
-            </nav>
-        </div>
-    </header>
+{% block title %}Inicio{% endblock %}
+{% block content %}
+<main>
+    <!-- Quiénes somos -->
+    <section id="quienes-somos">
+        <h1>Quiénes Somos</h1>
+        <p>Somos Nafru E-Commerce, una tienda especializada en productos de alta calidad, ofreciendo la mejor experiencia para nuestros clientes.</p>
+    </section>
 
-    <!-- Sección principal -->
-    <main>
-        <!-- Quiénes somos -->
-        <section id="quienes-somos">
-            <h1>Quiénes Somos</h1>
-            <p>Somos Nafru E-Commerce, una tienda especializada en productos de alta calidad, ofreciendo la mejor experiencia para nuestros clientes.</p>
-        </section>
+    <!-- Captadores de atención -->
+    <section id="captadores">
+        <h2>Captadores de Atención</h2>
+        <p>Nuestros productos se destacan por su exclusividad y calidad, captando la atención de aquellos que buscan lo mejor en el mercado.</p>
+    </section>
 
-        <!-- Captadores de atención -->
-        <section id="captadores">
-            <h2>Captadores de Atención</h2>
-            <p>Nuestros productos se destacan por su exclusividad y calidad, captando la atención de aquellos que buscan lo mejor en el mercado.</p>
-        </section>
+    <!-- Nuestros servicios -->
+    <section id="servicios">
+        <h2>Nuestros Servicios</h2>
+        <ul>
+            <li>Venta de productos exclusivos</li>
+            <li>Atención personalizada</li>
+            <li>Envíos a todo el país</li>
+        </ul>
+    </section>
 
-        <!-- Nuestros servicios -->
-        <section id="servicios">
-            <h2>Nuestros Servicios</h2>
-            <ul>
-                <li>Venta de productos exclusivos</li>
-                <li>Atención personalizada</li>
-                <li>Envíos a todo el país</li>
-            </ul>
-        </section>
-
-        <!-- Imagen del CEO -->
-        <section id="ceo">
-            <h2>Conoce a nuestro CEO</h2>
-            <img src="ceo.jpg" alt="Imagen del CEO">
-        </section>
-    </main>
-
-    <!-- Footer (opcional) -->
-    <footer>
-        <p>&copy; 2024 Nafru E-Commerce. Todos los derechos reservados.</p>
-    </footer>
-
-</body>
-</html>
+    <!-- Imagen del CEO -->
+    <section id="ceo">
+        <h2>Conoce a nuestro CEO</h2>
+        <img src="ceo.jpg" alt="Imagen del CEO">
+    </section>
+</main>
+{% endblock %}
