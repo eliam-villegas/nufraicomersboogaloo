@@ -1,105 +1,44 @@
 /* Estilos generales */
 body {
-    font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    background-color: white;
+    font-family: Arial, sans-serif;
+    background-color: #f5f1d1; /* Color de fondo general */
 }
 
-/* Barra de navegación */
-header {
-    background-color: #333;
-    color: white;
-    padding: 10px 0;
-}
-
-.nav-container {
+/* Otros estilos generales del contenido pueden ir aquí */
+.login-container {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 20px;
-}
-
-.logo img {
-    width: 150px; /* Ajusta el tamaño del logo */
-}
-
-nav {
-    flex-grow: 1;
-}
-
-.nav-links {
-    list-style: none;
-    display: flex;
-    justify-content: flex-end;
-    gap: 20px;
-    margin: 0;
-    padding: 0;
-}
-
-.nav-links li {
-    display: inline;
-}
-
-.nav-links a {
-    color: white;
-    text-decoration: none;
-    font-size: 18px;
-}
-
-.nav-links a:hover {
-    text-decoration: underline;
-}
-
-/* Sección principal */
-main {
-    max-width: 1200px;
-    margin: 20px auto;
-    padding: 0 20px;
-}
-
-/* Secciones */
-section {
-    margin-bottom: 40px;
-}
-
-h1, h2 {
-    color: #333;
-    text-align: center;
-}
-
-p, ul {
-    text-align: center;
-    font-size: 18px;
-}
-
-ul {
-    list-style: none;
-    padding: 0;
-}
-
-ul li {
-    margin: 10px 0;
-}
-
-/* Imagen del CEO */
-#ceo img {
-    display: block;
-    margin: 0 auto;
-    max-width: 300px;
-    border-radius: 50%; /* Redondea la imagen del CEO */
-}
-
-/* Footer */
-footer {
-    background-color: #333;
-    color: white;
-    text-align: center;
-    padding: 10px 0;
-    position: absolute;
+    min-height: 80vh;
     width: 100%;
-    bottom: 0;
+    margin-top: 0px;
+    background-color: #f8f9fa;
+}
+
+.login-form {
+    width: 100%;
+    max-width: 500px; /* Ajusta este valor para agrandar el formulario */
+    padding: 30px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+}
+
+
+h2.text-center {
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+}
+
+/* Elimina la clase .btn-primary si ya estás usando Bootstrap */
+a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
 }

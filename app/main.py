@@ -11,6 +11,10 @@ productos_collection = db['productos']
 def index():
     return render_template('index.html')
 
+@app.route('/carrito')
+def prueba():
+    return render_template('prueba.html')
+
 @app.route('/api/productos', methods=['GET'])
 def obtener_productos():
     productos = list(productos_collection.find({}, {"_id": 0, "nombre": 1, "precio": 1, "descripcion": 1, "imagenes": 1, "stock": 1, "categoria": 1, "estado": 1}))
@@ -27,6 +31,7 @@ def usuario():
 @app.route('/logged')
 def logged():
     return render_template('logged.html')
+
 
 # Ruta para manejar tanto GET (renderizar el formulario) como POST (procesar el formulario)
 @app.route('/agregar_producto', methods=['GET', 'POST'])
@@ -71,7 +76,7 @@ def login():
         if username == 'user' and password == '1234':
             return redirect(url_for('logged'))
         else:
-            return redirect(url_for('login'))
+            return redirect(url_for('usuario'))
     
     return render_template('usuario.html')
  
