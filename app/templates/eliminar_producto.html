@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eliminar Producto</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='eliminar_producto.css') }}">
+</head>
+<body>
+
+    <h1>Eliminar Producto</h1>
+
+    <!-- Dropdown para seleccionar productos -->
+    <label for="productosDropdown">Selecciona un producto para eliminar:</label>
+    <select id="productosDropdown">
+        <!-- Las opciones se cargarán dinámicamente desde JavaScript -->
+    </select>
+
+    <!-- Botón para eliminar el producto -->
+    <button id="eliminarBtn" onclick="eliminarProducto()">Eliminar Producto</button>
+
+    <div id="mensaje"></div>
+
+    <script src="{{ url_for('static', filename='eliminar_producto.js') }}"></script>
+
+</body>
+</html>

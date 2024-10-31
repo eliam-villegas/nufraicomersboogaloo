@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Actualizar Productos</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='actualizar_producto.css') }}">
+</head>
+<body>
+
+    <h1>Actualizar Producto</h1>
+
+    <!-- Dropdown para seleccionar productos -->
+    <label for="productosDropdown">Selecciona un producto:</label>
+    <select id="productosDropdown" onchange="llenarFormulario()">
+        <!-- Las opciones se cargarán dinámicamente desde JavaScript -->
+    </select>
+
+    <!-- Formulario para actualizar el producto -->
+    <form id="formActualizarProducto" onsubmit="actualizarProducto(event)">
+        <label for="nombre">Nombre del Producto</label>
+        <input type="text" id="nombre" name="nombre" required>
+
+        <label for="precio">Precio</label>
+        <input type="number" step="0.01" id="precio" name="precio" required>
+
+        <label for="descripcion">Descripción</label>
+        <textarea id="descripcion" name="descripcion" required></textarea>
+
+        <label for="stock">Stock</label>
+        <input type="number" id="stock" name="stock" required>
+
+        <label for="categoria">Categoría</label>
+        <input type="text" id="categoria" name="categoria" required>
+
+        <label for="estado">Estado</label>
+        <select id="estado" name="estado" required>
+            <option value="activo">Activo</option>
+            <option value="inactivo">Inactivo</option>
+        </select>
+
+        <!-- Campo para añadir la URL de la imagen -->
+        <label for="imagenes">URL de la imagen</label>
+        <input type="text" id="imagenes" name="imagenes" required>
+
+        <!-- Mostrar la imagen actual del producto -->
+        <div id="imagenActualContainer">
+            <p>Imagen Actual:</p>
+            <img id="imagenActual" src="" alt="Imagen del producto" style="max-width: 100%; height: auto;">
+        </div>
+
+        <button type="submit">Actualizar Producto</button>
+    </form>
+
+    <script src="{{ url_for('static', filename='actualizar_producto.js') }}"></script>
+
+</body>
+</html>
