@@ -1,0 +1,44 @@
+/* Estilos generales */
+body {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+    background-color: #f5f1d1; /* Color de fondo general */
+}
+
+/* Otros estilos generales del contenido pueden ir aquí */
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 80vh;
+    width: 100%;
+    margin-top: 0px;
+    background-color: #f8f9fa;
+}
+
+.login-form {
+    width: 100%;
+    max-width: 500px; /* Ajusta este valor para agrandar el formulario */
+    padding: 30px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+}
+
+
+h2.text-center {
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+}
+
+/* Elimina la clase .btn-primary si ya estás usando Bootstrap */
+a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}

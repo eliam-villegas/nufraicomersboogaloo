@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block title %}Carrito de Compras{% endblock %}
+{% block extra_css %}
+{% endblock %}
+
+{% block content %}
+<div class="cart-container">
+    <h1>Carrito de Compras</h1>
+
+    <!-- Tabla del carrito -->
+    <table class="table table-bordered cart-table">
+        <thead>
+            <tr>
+                <th>Producto</th>
+                <th>Cantidad</th>
+                <th>Precio Unitario</th>
+                <th>Total</th>
+            </tr>
+        </thead>
+    </table>
+
+    <!-- Total del carrito -->
+    <div class="cart-total">
+    </div>
+
+    <!-- Botón para proceder al pago -->
+    <button class="btn-checkout mt-4">Proceder al Pago</button>
+</div>
+{% endblock %}

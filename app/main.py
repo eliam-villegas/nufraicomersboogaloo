@@ -13,6 +13,10 @@ productos_collection = db['productos']
 def index():
     return render_template('index.html')
 
+@app.route('/carrito')
+def prueba():
+    return render_template('prueba.html')
+
 @app.route('/api/productos', methods=['GET'])
 def obtener_productos():
     productos = list(productos_collection.find({}, {"_id": 1, "nombre": 1, "precio": 1, "descripcion": 1, "imagenes": 1, "stock": 1, "categoria": 1, "estado": 1}))
@@ -39,6 +43,7 @@ def obtener_producto(id):
         producto["_id"] = str(producto["_id"])  # Convertir ObjectId a string
         return jsonify(producto)
     return jsonify({"error": "Producto no encontrado"}), 404
+
 
 
 # Ruta para manejar tanto GET (renderizar el formulario) como POST (procesar el formulario)
@@ -84,7 +89,7 @@ def login():
         if username == 'user' and password == '1234':
             return redirect(url_for('logged'))
         else:
-            return redirect(url_for('login'))
+            return redirect(url_for('usuario'))
     
     return render_template('usuario.html')
  
