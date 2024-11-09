@@ -4,7 +4,7 @@ body {
     padding: 0;
     box-sizing: border-box;
     font-family: Arial, sans-serif;
-    background-color: #f5f1d1; /* Color de fondo similar al de tu imagen */
+    background-color: #f5f1d1; /* Color de fondo */
 }
 
 /* Barra de navegación */
@@ -20,6 +20,7 @@ header {
     max-width: 1800px;
     margin: 0 auto;
     padding: 0 20px;
+    z-index: 1000;
 }
 
 /* Logo */
@@ -30,8 +31,9 @@ header {
 
 /* Enlaces de navegación */
 nav {
+    flex-grow: 1;
     display: flex;
-    justify-content: flex-end;
+    justify-content: center; /* Centra los enlaces de navegación */
 }
 
 .nav-links {
@@ -48,9 +50,10 @@ nav {
 }
 
 .nav-links a {
-    color: #333;
+    color: #333; /* Mantiene el color original de los enlaces */
     text-decoration: none;
     font-size: 18px;
+    font-weight: 500;
     display: flex;
     align-items: center;
 }
@@ -59,10 +62,26 @@ nav {
     text-decoration: underline;
 }
 
+/* Botón de inicio de sesión */
+.login-button {
+    background-color: #2EBABF; /* Color del botón */
+    color: #ffffff;
+    padding: 8px 16px;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: 500;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+}
+
+.login-button:hover {
+    background-color: #29a0a5; /* Cambio de color en hover */
+}
+
 /* Iconos de usuario y carrito */
 .icon-user:before, .icon-cart:before {
     vertical-align: middle; /* Alinea el icono con el texto */
-    font-size: 1.2em; /* Ajusta el tamaño del emoji para que se vea en línea con el texto */
+    font-size: 1.2em; /* Ajusta el tamaño del emoji */
     margin-right: 4px; /* Espacio entre el icono y el texto */
 }
 

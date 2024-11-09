@@ -17,8 +17,7 @@
             <div class="logo">
                 <!-- Logo de la tienda -->
                 <a href="{{ url_for('index') }}">
-                    <img src="https://raw.githubusercontent.com/eliam-villegas/nufraicomers/refs/heads/main/imagenes/nufra_logo-removebg-preview.png"
-                        alt="Logo" class="logo-img">
+                    <img src="https://raw.githubusercontent.com/eliam-villegas/nufraicomers/refs/heads/main/imagenes/nufra_logo-removebg-preview.png" alt="Logo" class="logo-img">
                 </a>
             </div>
             <nav>
@@ -30,24 +29,25 @@
             </nav>
         </div>
     </header>
-
-    <div class="login-container">
-        <h2>Iniciar Sesión</h2>
-        <!-- El action apunta a la ruta de Flask usando url_for -->
-        <form action="{{ url_for('login') }}" method="GET">
-            <div class="form-group">
-                <label for="username">Nombre de Usuario o Correo Electrónico:</label>
-                <input type="text" id="username" name="username" required>
+    
+    <div class="main-container">
+        <div class="login-container">
+            <h2>Iniciar Sesión</h2>
+            <form action="{{ url_for('login') }}" method="GET">
+                <div class="form-group">
+                    <label for="username">Nombre de Usuario o Correo Electrónico:</label>
+                    <input type="text" id="username" name="username" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Contraseña:</label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+                <button type="submit" class="login-btn">Ingresar</button>
+            </form>
+            <div class="form-footer">
+                <p>¿No tienes cuenta? <a href="#">Regístrate aquí</a></p>
+                <p><a href="#">¿Olvidaste tu contraseña?</a></p>
             </div>
-            <div class="form-group">
-                <label for="password">Contraseña:</label>
-                <input type="password" id="password" name="password" required>
-            </div>
-            <button type="submit" class="login-btn">Ingresar</button>
-        </form>
-        <div class="form-footer">
-            <p>¿No tienes cuenta? <a href="#">Regístrate aquí</a></p>
-            <p><a href="#">¿Olvidaste tu contraseña?</a></p>
         </div>
     </div>
 

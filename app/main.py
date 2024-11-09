@@ -1,13 +1,42 @@
 from flask import Flask, render_template, jsonify, request, redirect, url_for
 
-from app.database import get_db
+from database import get_db
+from clientes import Database
 from bson.objectid import ObjectId
 
 app = Flask(__name__)
 
+# Conexion a Postgres
+db_cliente = Database(app)
+
+@app.route('/data_base/add_user', methods=['POST'])
+def add_user():
+    data = request.get_json()
+    new_user = db_cliente.add_user(username=data['username'], email=data['email'], password=data['password'])
+    return jsonify({"id": new_user.id, "username": new_user.username, "email": new_user.email})
+
+# Ruta para obtener todos los usuarios
+@app.route('/data_base/users', methods=['GET'])
+def get_users():
+    users = db_cliente.get_users()
+    return jsonify([{"id": user.id, "username": user.username, "email": user.email} for user in users])
+
+# Ruta para agregar una compra
+@app.route('/data_base/add_purchase', methods=['POST'])
+def add_purchase():
+    data = request.get_json()
+    new_purchase = db_cliente.add_purchase(user_id=data['user_id'], product_name=data['product_name'], amount=data['amount'])
+    return jsonify({"id": new_purchase.id, "product_name": new_purchase.product_name, "amount": new_purchase.amount})
+
+# Ruta para obtener compras de un usuario
+@app.route('/data_base/purchases/<int:user_id>', methods=['GET'])
+def get_purchases(user_id):
+    purchases = db_cliente.get_purchases_by_user(user_id)
+    return jsonify([{"product_name": p.product_name, "amount": p.amount} for p in purchases])
+
 # Conexión a MongoDB
-db = get_db()
-productos_collection = db['productos']
+db_productos = get_db()
+productos_collection = db_productos['productos']
 
 @app.route('/')
 def index():
@@ -88,7 +117,6 @@ def login():
     
     return render_template('usuario.html')
  
-=======
 # Ruta para actualizar un producto (sin pasar ID en la URL)
 @app.route('/actualizar_producto', methods=['GET', 'POST'])
 def actualizar_producto():

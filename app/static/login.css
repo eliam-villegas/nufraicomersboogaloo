@@ -3,50 +3,19 @@ body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #f4f4f4;
+    background-color: #fcfaef; /* Color de fondo */
+}
+
+/* Contenedor principal que envuelve el formulario */
+.main-container {
     display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;  /* Hacemos que el body ocupe toda la altura de la ventana */
+    justify-content: center; /* Centra el contenido horizontalmente */
+    align-items: center;     /* Centra el contenido verticalmente */
+    padding-top: 80px; /* Espacio para evitar que el contenido se superponga con la barra */
+    background-color: #fcfaef; /* Color de fondo */
 }
 
-/* Estilos para la barra de navegación */
-.nav-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: #fdf5d4;
-    padding: 10px 20px;
-    position: absolute;
-    top: 0;
-    width: 100%;
-}
-
-.logo img {
-    max-width: 120px;
-}
-
-.nav-links {
-    list-style: none;
-    display: flex;
-    gap: 20px;
-}
-
-.nav-links li {
-    display: inline;
-}
-
-.nav-links a {
-    text-decoration: none;
-    color: #000;
-    font-size: 1.1rem;
-}
-
-.nav-links a:hover {
-    color: #007BFF;
-}
-
-/* Estilos para centrar el formulario de login en la página */
+/* Estilos para el formulario de login */
 .login-container {
     background-color: #fff;
     padding: 20px;
@@ -72,11 +41,12 @@ body {
 }
 
 .form-group input {
-    width: 850%;
+    width: 100%;
     padding: 10px;
     font-size: 1rem;
     border: 1px solid #ccc;
     border-radius: 4px;
+    box-sizing: border-box;
 }
 
 .login-btn {
