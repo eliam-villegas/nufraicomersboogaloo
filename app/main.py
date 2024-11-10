@@ -1,7 +1,7 @@
 from flask import Flask, render_template, jsonify, request, redirect, url_for
 
 from database import get_db
-from clientes import Database
+from clientes import Database, User , Purchase
 from bson.objectid import ObjectId
 
 app = Flask(__name__)
@@ -34,6 +34,32 @@ def get_purchases(user_id):
     purchases = db_cliente.get_purchases_by_user(user_id)
     return jsonify([{"product_name": p.product_name, "amount": p.amount} for p in purchases])
 
+@app.route('/registro', methods=['GET'])
+def register():
+    return render_template('registro.html')
+
+@app.route('/register_user', methods=['POST'])
+def register_user():
+    try:
+        name = request.form['name']
+        email = request.form['email']
+        address = request.form['address']
+        password = request.form['password']
+        
+        # Crear y agregar el nuevo usuario
+        new_user = User(name=name, email=email, address=address, password=password)
+        db_cliente.session.add(new_user)
+        db_cliente.session.commit()
+        
+        return jsonify({"message": "Usuario registrado exitosamente", "user": {"id": new_user.id, "name": new_user.name, "email": new_user.email}})
+    
+    except Exception as e:
+        # Imprimir el error en la consola
+        print("Error:", e)
+        return jsonify({"error": "Ocurrió un error al registrar el usuario"}), 500
+
+
+
 # Conexión a MongoDB
 db_productos = get_db()
 productos_collection = db_productos['productos']
@@ -52,6 +78,10 @@ def obtener_productos():
 @app.route('/productos')
 def productos():
     return render_template('productos.html')
+
+@app.route('/carrito')
+def carrito():
+    return render_template('carrito.html')
 
 @app.route('/usuario')
 def usuario():
