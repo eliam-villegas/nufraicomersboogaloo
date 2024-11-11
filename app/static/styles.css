@@ -42,3 +42,27 @@ a {
 a:hover {
     text-decoration: underline;
 }
+
+/* Estilos para la tarjeta de perfil */
+.card {
+    margin-bottom: 20px;
+}
+
+/* Mejorar la imagen del perfil */
+.card-img-top {
+    border-radius: 50%;
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    margin: 0 auto;
+}
+
+/* Estilos para los botones */
+.btn-primary {
+    width: 100%;
+}
+
+/* Espaciado y bordes en los textos */
+.card-body p {
+    font-size: 16px;
+}

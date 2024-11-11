@@ -1,0 +1,45 @@
+
+{% extends "base.html" %}
+
+{% block title %}Inicio{% endblock %}
+{% block extra_css %}
+{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2>Bienvenido, {{ datos.username }}</h2>
+    <div class="row">
+        <div class="col-md-4">
+            <!-- Aquí puedes agregar una foto de perfil si lo deseas -->
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Foto de perfil</h5>
+                    <p class="card-text">Actualiza tu foto de perfil aquí.</p>
+                    <a href="#" class="btn btn-primary">Cambiar Foto</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-8">
+            <!-- Información personal -->
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Información Personal</h5>
+                    <p><strong>Nombre de Usuario:</strong> {{ datos.username }}</p>
+                    <p><strong>Correo Electrónico:</strong> {{ datos.email }}</p>
+                    <p><strong>Número de Teléfono:</strong> 
+                        {% if datos.phone_number %}
+                            {{ datos.phone_number }}
+                        {% else %}
+                            No registrado
+                        {% endif %}
+                    </p>
+
+                    <a href="{{ url_for('auth_service.logout') }}" class="btn btn-danger">Cerrar Sesión</a>
+                    <a href="#" class="btn btn-secondary">Editar Información</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

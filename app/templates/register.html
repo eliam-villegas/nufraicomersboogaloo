@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block title %}Inicio{% endblock %}
+{% block extra_css %}
+{% endblock %}
+
+{% block content %}
+<div class="login-container d-flex justify-content-center align-items-center"> 
+    <div class="login-form shadow p-4 rounded bg-white"> 
+        <h2 class="text-center mb-4">Registrar</h2> 
+
+        <form action="{{ url_for('auth_service.register') }}" method="POST"> 
+            <div class="mb-3"> 
+                <label for="username" class="form-label">Nombre de Usuario</label> 
+                <input type="text" class="form-control" id="username" name="username" placeholder="Introduce tu nombre de usuario" required> 
+            </div> 
+            <div class="mb-3"> 
+                <label for="email" class="form-label">Correo Electrónico</label> 
+                <input type="email" class="form-control" id="email" name="email" placeholder="usuario@ejemplo.com" required> 
+            </div> 
+            <div class="mb-3"> 
+                <label for="password" class="form-label">Contraseña</label> 
+                <input type="password" class="form-control" id="password" name="password" placeholder="Introduce tu contraseña" required> 
+            </div> 
+            <div class="mb-3"> 
+                <label for="phone_number" class="form-label">Número de Teléfono (Opcional)</label> 
+                <input type="text" class="form-control" id="phone_number" name="phone_number" placeholder="Introduce tu número de teléfono"> 
+            </div> 
+            <button type="submit" class="btn btn-primary w-100">Registrar</button> 
+        </form> 
+    </div> 
+</div>
+{% endblock %}

@@ -1,21 +1,50 @@
-from flask import Flask, render_template, jsonify, request, redirect, url_for
+from flask import Flask, render_template, jsonify, request, redirect, url_for, session, g
+from werkzeug.security import generate_password_hash, check_password_hash 
+import psycopg2 
+from psycopg2.extras import RealDictCursor
+from flask_sqlalchemy import SQLAlchemy 
+from flask_bcrypt import Bcrypt 
+from flask_cors import CORS
 
 from app.database import get_db
 from bson.objectid import ObjectId
 
-app = Flask(__name__)
+from app.auth_service.auth_function import auth
+
+db_postgres = SQLAlchemy()
+
+app = Flask(__name__) 
+app.secret_key = 'supercalifrajilisticoespiralidoso'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:password@postgres:5432/mydb'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+app.register_blueprint(auth, url_prefix='/auth')
+
+#conexion a postgres
+db_postgres.init_app(app)
 
 # Conexión a MongoDB
 db = get_db()
 productos_collection = db['productos']
 
+@app.before_request
+def before_request():
+    # Verificar si el usuario está logueado y pasar la variable 'logged_in' a todas las plantillas
+    g.logged_in = 'user_id' in session  # Booleano que indica si el usuario está logueado
+    g.user_id = session.get('user_id')
+
 @app.route('/')
 def index():
-    return render_template('index.html')
+    if 'user_id' in session:
+        # Renderizar una vista para usuario logueado
+        return render_template('index.html', logged_in=g.logged_in, user=g.user_id)
+    else:
+        # Renderizar una vista para usuario no logueado
+        return render_template('index.html', logged_in=False)
 
 @app.route('/carrito')
 def prueba():
-    return render_template('prueba.html')
+    return render_template('prueba.html', logged_in=g.logged_in, user=g.user_id)
 
 @app.route('/api/productos', methods=['GET'])
 def obtener_productos():
@@ -26,15 +55,12 @@ def obtener_productos():
 
 @app.route('/productos')
 def productos():
-    return render_template('productos.html')
-
-@app.route('/usuario')
-def usuario():
-    return render_template('usuario.html')
+    return render_template('productos.html', logged_in=g.logged_in, user=g.user_id)
 
 @app.route('/logged')
 def logged():
     return render_template('logged.html')
+
 # Ruta para obtener un producto por su ID
 @app.route('/api/producto/<id>', methods=['GET'])
 def obtener_producto(id):
@@ -78,22 +104,7 @@ def agregar_producto():
 
     # Si es una solicitud GET, renderiza la página de agregar productos
     return render_template('agregar_producto.html')
-
-#login handler
-@app.route('/login', methods=['GET', 'POST'])  # no se si sirve esto 
-def login():
-    if request.method == 'POST':
-        username = request.form['username']
-        password = request.form['password']
-
-        if username == 'user' and password == '1234':
-            return redirect(url_for('logged'))
-        else:
-            return redirect(url_for('usuario'))
-    
-    return render_template('usuario.html')
  
-=======
 # Ruta para actualizar un producto (sin pasar ID en la URL)
 @app.route('/actualizar_producto', methods=['GET', 'POST'])
 def actualizar_producto():
@@ -137,3 +148,5 @@ def eliminar_producto():
 
 if __name__ == '__main__':
     app.run(host="127.0.0.1", port=8000, debug=True)
+
+

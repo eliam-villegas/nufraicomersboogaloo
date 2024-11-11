@@ -10,17 +10,19 @@
         <h2 class="text-center mb-4">Iniciar Sesión</h2>
 
         <!-- El action apunta a la ruta de Flask usando url_for -->
-        <form action="{{ url_for('login') }}" method="POST">
+        <form action="{{ url_for('auth_service.login') }}" method="POST">
             <!-- Campo de email -->
             <div class="mb-3">
                 <label for="email" class="form-label">Correo Electrónico</label>
-                <input type="email" class="form-control" id="email" placeholder="usuario@ejemplo.com" required>
+                <!--<input type="email" class="form-control" id="email" placeholder="usuario@ejemplo.com" required>-->
+                <input type="text" class="form-control" name="email" placeholder="usuario@ejemplo.com" required>
             </div>
 
             <!-- Campo de contraseña -->
             <div class="mb-3">
                 <label for="password" class="form-label">Contraseña</label>
-                <input type="password" class="form-control" id="password" placeholder="Introduce tu contraseña" required>
+                <!--<input type="password" class="form-control" id="password" placeholder="Introduce tu contraseña" required>-->
+                <input type="password" class="form-control" name="password" placeholder="Introduce tu contraseña" required>
             </div>
 
             <!-- Checkbox de recordar -->
