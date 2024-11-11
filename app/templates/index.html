@@ -1,16 +1,40 @@
-{% extends "base.html" %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nufra</title>
+    <!-- Enlace al archivo CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='navbar.css') }}">
+</head>
+<body>
 
-{% block title %}Nufra Store{% endblock %}
-{% block extra_css %}
-<!--CSS especifico-->
-{% endblock %}
-{% block content %}
-<main>
-    <!-- Quiénes somos -->
-    <section id="quienes-somos">
-        <h1>Quiénes Somos</h1>
-        <p>Somos Nafru E-Commerce, una tienda especializada en productos de alta calidad, ofreciendo la mejor experiencia para nuestros clientes.</p>
-    </section>
+    <!-- Barra de navegación -->
+    <header>
+        <div class="nav-container">
+            <div class="logo">
+                <!-- Logo de la tienda -->
+                <a href="{{ url_for('index') }}">
+                    <img src="https://raw.githubusercontent.com/eliam-villegas/nufraicomers/refs/heads/main/imagenes/nufra_logo-removebg-preview.png" alt="Logo" class="logo-img">
+                </a>
+            </div>
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="/productos">Tienda</a></li>
+                    <li><a href="/carrito"><i class="icon-cart"></i> Carrito</a></li>
+                    <li><a href="/usuario"><i class="icon-user"></i> Usuario</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Sección principal -->
+    <main>
+        <!-- Quiénes somos -->
+        <section id="quienes-somos">
+            <h1>Quiénes Somos</h1>
+            <p>Somos Nafru E-Commerce, una tienda especializada en productos de alta calidad, ofreciendo la mejor experiencia para nuestros clientes.</p>
+        </section>
 
     <!-- Captadores de atención -->
     <section id="captadores">

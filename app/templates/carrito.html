@@ -1,30 +1,35 @@
-{% extends "base.html" %}
+<!DOCTYPE html>
+<html lang="es">
 
-{% block title %}Carrito de Compras{% endblock %}
-{% block extra_css %}
-{% endblock %}
+<head>
+    <meta charset="UTF-8">
+    <title>Carrito de Compra</title>
+    <!-- Enlace al archivo CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='navbar.css') }}">
+</head>
 
-{% block content %}
-<div class="cart-container">
-    <h1>Carrito de Compras</h1>
+<body>
 
-    <!-- Tabla del carrito -->
-    <table class="table table-bordered cart-table">
-        <thead>
-            <tr>
-                <th>Producto</th>
-                <th>Cantidad</th>
-                <th>Precio Unitario</th>
-                <th>Total</th>
-            </tr>
-        </thead>
-    </table>
+    <!-- Barra de navegación -->
+    <header>
+        <div class="nav-container">
+            <div class="logo">
+                <!-- Logo de la tienda -->
+                <a href="{{ url_for('index') }}">
+                    <img src="https://raw.githubusercontent.com/eliam-villegas/nufraicomers/refs/heads/main/imagenes/nufra_logo-removebg-preview.png" alt="Logo" class="logo-img">
+                </a>
+            </div>
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="/productos">Tienda</a></li>
+                    <li><a href="/carrito"><i class="icon-cart"></i> Carrito</a></li>
+                    <li><a href="/usuario"><i class="icon-user"></i> Usuario</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    
+    peo
+</body>
 
-    <!-- Total del carrito -->
-    <div class="cart-total">
-    </div>
-
-    <!-- Botón para proceder al pago -->
-    <button class="btn-checkout mt-4">Proceder al Pago</button>
-</div>
-{% endblock %}
+</html>

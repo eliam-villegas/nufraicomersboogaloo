@@ -1,13 +1,95 @@
-from flask import Flask, render_template, jsonify, request, redirect, url_for
+from flask import Flask, render_template, jsonify, request, redirect, url_for, session
 
-from app.database import get_db
+from database import get_db
+from clientes import Database
 from bson.objectid import ObjectId
+from werkzeug.security import check_password_hash, generate_password_hash
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
 
 app = Flask(__name__)
+app.secret_key = os.getenv('APP_KEY')
+
+# Conexion a Postgres
+db_cliente = Database()    
+
+@app.route('/registro', methods=['GET'])
+def register():
+    return render_template('registro.html')
+
+@app.route('/admin')
+def admin_route():
+    if 'user_id' not in session or not session.get('is_admin'):
+        return jsonify({"error": "Acceso denegado"}), 403
+    return render_template('admin.html')
+
+
+@app.route('/data_base/register_user', methods=['POST'])
+def register_user():
+    data = request.get_json()
+    password_hash = generate_password_hash(data['password'])
+    user_id = db_cliente.insert_user(
+        name=data['name'],
+        email=data['email'],
+        address=data['address'],
+        password=password_hash
+    )
+    if user_id:
+        return jsonify({"id": user_id, "username": data['name'], "email": data['email']})
+    else:
+        return jsonify({"error": "Error al registrar el usuario"}), 500
+    
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        data = request.get_json()
+        username = data['username']
+        password = data['password']
+    else:  # Si el método es GET
+        username = request.args.get('username')
+        password = request.args.get('password')
+
+    if username == os.getenv('ADMIN_USER') and password == os.getenv('ADMIN_PASS'):
+        session['user_id'] = 'admin'
+        session['is_admin'] = True
+        return admin_panel()
+    
+    user = db_cliente.get_user_by_username(username)
+    if user and check_password_hash(user['password'], password):
+        # Iniciar sesión como usuario normal
+        session['user_id'] = user['id']
+        session['is_admin'] = False
+        return render_template('index.html', username=user['name'])  
+
+    # Si las credenciales son incorrectas
+    return jsonify({"error": "Credenciales incorrectas"}), 401
+
+def admin_panel():
+    if 'user_id' not in session or not session.get('is_admin'):
+        return redirect(url_for('login'))
+
+    # Obtener todos los usuarios de la base de datos
+    users = db_cliente.get_all_users()
+    
+    # Pasar la lista de usuarios a la plantilla admin.html
+    return render_template('admin.html', users=users)
+
+@app.route('/protected')
+def protected():
+    if 'user_id' not in session:
+        return redirect(url_for('login'))
+    return jsonify({"message": "Bienvenido a la ruta protegida"})
+
+@app.route('/logout')
+def logout():
+    session.pop('user_id', None)
+    return jsonify({"message": "Cierre de sesión exitoso"})
 
 # Conexión a MongoDB
-db = get_db()
-productos_collection = db['productos']
+db_productos = get_db()
+productos_collection = db_productos['productos']
 
 @app.route('/')
 def index():
@@ -28,8 +110,13 @@ def obtener_productos():
 def productos():
     return render_template('productos.html')
 
+@app.route('/carrito')
+def carrito():
+    return render_template('carrito.html')
+
 @app.route('/usuario')
 def usuario():
+    print(app.url_map)
     return render_template('usuario.html')
 
 @app.route('/logged')
@@ -78,22 +165,7 @@ def agregar_producto():
 
     # Si es una solicitud GET, renderiza la página de agregar productos
     return render_template('agregar_producto.html')
-
-#login handler
-@app.route('/login', methods=['GET', 'POST'])  # no se si sirve esto 
-def login():
-    if request.method == 'POST':
-        username = request.form['username']
-        password = request.form['password']
-
-        if username == 'user' and password == '1234':
-            return redirect(url_for('logged'))
-        else:
-            return redirect(url_for('usuario'))
-    
-    return render_template('usuario.html')
  
-=======
 # Ruta para actualizar un producto (sin pasar ID en la URL)
 @app.route('/actualizar_producto', methods=['GET', 'POST'])
 def actualizar_producto():

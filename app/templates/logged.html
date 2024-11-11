@@ -1,9 +1,37 @@
-{% extends "base.html" %}
+<!DOCTYPE html>
+<html lang="es">
 
-{% block title %}Inicio{% endblock %}
-{% block extra_css %}
-{% endblock %}
+<head>
+    <meta charset="UTF-8">
+    <title>Inicio de Sesion</title>
+    <!-- Enlace al archivo CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='navbar.css') }}">
+    
+</head>
 
-{% block content %}
-TODO: caleta
-{% endblock %}
+<body>
+
+    <!-- Barra de navegación -->
+    <header>
+        <div class="nav-container">
+            <div class="logo">
+                <!-- Logo de la tienda -->
+                <a href="{{ url_for('index') }}">
+                    <img src="https://raw.githubusercontent.com/eliam-villegas/nufraicomers/refs/heads/main/imagenes/nufra_logo-removebg-preview.png" alt="Logo" class="logo-img">
+                </a>
+            </div>
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="/productos">Tienda</a></li>
+                    <li><a href="/carrito"><i class="icon-cart"></i> Carrito</a></li>
+                    <li><a href="/usuario"><i class="icon-user"></i> Usuario</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <h1> CUENTA REGISTRADA EXITOSAMENTE </h1>
+
+</body>
+
+</html>
