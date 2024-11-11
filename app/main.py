@@ -95,10 +95,6 @@ productos_collection = db_productos['productos']
 def index():
     return render_template('index.html')
 
-@app.route('/carrito')
-def prueba():
-    return render_template('prueba.html')
-
 @app.route('/api/productos', methods=['GET'])
 def obtener_productos():
     productos = list(productos_collection.find({}, {"_id": 1, "nombre": 1, "precio": 1, "descripcion": 1, "imagenes": 1, "stock": 1, "categoria": 1, "estado": 1}))
