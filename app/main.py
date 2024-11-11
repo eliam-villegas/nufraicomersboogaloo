@@ -1,16 +1,29 @@
 from flask import Flask, render_template, jsonify, request, redirect, url_for, session
 
+from app.carrito import carrito_bp
 from database import get_db
 from clientes import Database
+from carrito import carrito_bp
 from bson.objectid import ObjectId
 from werkzeug.security import check_password_hash, generate_password_hash
 from dotenv import load_dotenv
 import os
 
+from transbank.webpay.webpay_plus.transaction import Transaction
+from transbank.common.integration_type import IntegrationType
+from transbank.error.transbank_error import TransbankError
+
 load_dotenv()
 
 app = Flask(__name__)
-app.secret_key = os.getenv('APP_KEY')
+app.secret_key = 'e5f67a4efab7f3c3d5a82a4a27f601b8742e3edbd8ab6df1a68eac73c9d45e3f'
+app.register_blueprint(carrito_bp)
+
+
+# Configuración de Transbank para el modo de prueba
+Transaction.commerce_code = '597055555532'  # Código de comercio de prueba
+Transaction.api_key = '579B532A7440BB0C9079DED94D31EA1615BACEB56610332264630D42D0A36B1C'       # API Key de prueba
+Transaction.integration_type = IntegrationType.TEST
 
 # Conexion a Postgres
 db_cliente = Database()    
@@ -18,6 +31,51 @@ db_cliente = Database()
 @app.route('/registro', methods=['GET'])
 def register():
     return render_template('registro.html')
+
+
+@app.route('/iniciar_pago', methods=['POST'])
+def iniciar_pago():
+    # Obtén el monto total desde el carrito u otro cálculo
+    amount = request.json.get("amount")
+    session_id = "sesion12345"  # Puedes generar un ID de sesión único para el usuario
+    buy_order = "orden" + str(session_id)  # Generar un ID de orden único
+    return_url = url_for('confirmar_pago', _external=True)  # URL de retorno después del pago
+
+    # Crear la transacción con Webpay Plus
+    response = Transaction().create(buy_order, session_id, amount, return_url)
+
+    if response:
+        # Redirigir al usuario a la URL de pago de Webpay Plus
+        return jsonify({"url": response['url'], "token": response['token']})
+    else:
+        return jsonify({"error": "No se pudo iniciar la transacción"}), 400
+
+
+@app.route('/confirmar_pago', methods=['GET', 'POST'])
+def confirmar_pago():
+    # Obtener el token de la transacción desde `GET` o `POST`
+    token_ws = request.args.get("token_ws") or request.form.get("token_ws")
+
+    # Verificar que el token no esté vacío o nulo
+    if not token_ws:
+        return "Token no encontrado", 400
+
+    try:
+        # Crear una instancia de Transaction y confirmar la transacción con el token
+        transaction = Transaction()
+        response = transaction.commit(token_ws)
+
+        # Comprobar si la transacción fue aprobada
+        if response.get('response_code') == 0:
+            # Renderizar una página de éxito
+            return render_template("pago_exitoso.html", detalle=response)
+        else:
+            # Renderizar una página de rechazo o error
+            return render_template("pago_rechazado.html", detalle=response)
+
+    except TransbankError as e:
+        # Captura errores de Transbank y los muestra en una página de error
+        return f"Error en la transacción: {str(e)}", 500
 
 @app.route('/admin')
 def admin_route():
@@ -202,6 +260,15 @@ def eliminar_producto():
         productos_collection.delete_one({"_id": ObjectId(id)})
         return jsonify({"mensaje": "Producto eliminado correctamente"}), 200
     return render_template('eliminar_producto.html')
+
+@app.route('/producto/<id>')
+def detalle_producto(id):
+    producto = productos_collection.find_one({"_id": ObjectId(id)})
+    if producto:
+        producto["_id"] = str(producto["_id"])  # Convertimos ObjectId a string
+        return render_template('detalle_producto.html', producto=producto)
+    return jsonify({"error": "Producto no encontrado"}), 404
+
 
 if __name__ == '__main__':
     app.run(host="127.0.0.1", port=8000, debug=True)
