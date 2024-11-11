@@ -11,6 +11,7 @@ body {
 header {
     background-color: #f5f1d1; /* Fondo de la barra */
     padding: 10px 0;
+    margin-bottom: 0;
 }
 
 .nav-container {
