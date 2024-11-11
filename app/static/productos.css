@@ -85,3 +85,14 @@ h1 {
         max-width: 300px;
     }
 }
+
+.producto-link {
+    text-decoration: none;
+    color: inherit;
+}
+
+.producto-link:hover .producto {
+    transform: scale(1.05);
+    box-shadow: 4px 4px 15px rgba(0, 0, 0, 0.2);
+}
+
