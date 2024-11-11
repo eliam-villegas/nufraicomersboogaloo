@@ -11,8 +11,7 @@ services:
     ports:
       - "5000:5000"
     environment:
-      - MONGO_URI=mongodb+srv://benjaminsilva:benjaminsilva@cluster0.uawrn.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
-      - POSTGRES_URI=postgresql://postgres:password@postgres:5432/mydb
+      - DATABASE_URI=${DATABASE_URI}
     depends_on:
       - postgres
 
