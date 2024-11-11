@@ -24,7 +24,13 @@
                 <ul class="nav-links">
                     <li><a href="/productos">Tienda</a></li>
                     <li><a href="/carrito"><i class="icon-cart"></i> Carrito</a></li>
-                    <li><a href="/usuario"><i class="icon-user"></i> Usuario</a></li>
+                    <li><a href="/usuario" id="user-link"><i class="icon-user"></i> 
+                        {% if username %}
+                            {{ username }}
+                        {% else %}
+                            Usuario
+                        {% endif %}
+                    </a></li>
                 </ul>
             </nav>
         </div>
@@ -59,6 +65,16 @@
         </div>
     </div>
 
+    <script>
+        // Código JavaScript opcional para actualización dinámica
+        document.addEventListener("DOMContentLoaded", function() {
+            const username = "{{ username|safe }}";
+            if (username) {
+                const userLink = document.getElementById("user-link");
+                userLink.innerHTML = `<i class="icon-user"></i> ${username}`;
+            }
+        });
+    </script>
 </body>
 
 </html>
