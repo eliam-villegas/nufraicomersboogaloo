@@ -3,73 +3,11 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Inicio de Sesion</title>
-    <!-- Enlace al archivo CSS -->
+    <title>Inicio de Sesión</title>
+    <!-- Enlace al archivo CSS de Bootstrap -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='navbar.css') }}">
 
-    <style>
-        h1 {
-            margin-bottom: 20px;
-        }
-
-        .table-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            margin-top: 20px;
-        }
-
-        table {
-            border-collapse: collapse;
-            width: 80%;
-            text-align: center;
-            background-color: white;
-            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-        }
-
-        th, td {
-            padding: 12px;
-            border: 1px solid #ddd;
-        }
-
-        th {
-            background-color: #007bff;
-            color: white;
-        }
-
-        .button-container {
-            margin-top: 20px;
-            display: flex;
-            gap: 15px;
-        }
-
-        .btn {
-            padding: 10px 20px;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-            border: none;
-            color: white;
-            border-radius: 5px;
-            transition: background-color 0.3s ease;
-        }
-
-        .btn-add {
-            background-color: #28a745;
-        }
-
-        .btn-add:hover {
-            background-color: #218838;
-        }
-
-        .btn-delete {
-            background-color: #dc3545;
-        }
-
-        .btn-delete:hover {
-            background-color: #c82333;
-        }
-    </style>
 </head>
 
 <body>
@@ -87,44 +25,68 @@
                 <ul class="nav-links">
                     <li><a href="/productos">Tienda</a></li>
                     <li><a href="/carrito"><i class="icon-cart"></i> Carrito</a></li>
-                    <li><a href="/usuario"><i class="icon-user"></i> Usuario</a></li>
+                    <li><a href="/usuario" id="user-link"><i class="icon-user"></i> 
+                        {% if username %}
+                            {{ username }}
+                        {% else %}
+                            Usuario
+                        {% endif %}
+                    </a></li>
                 </ul>
             </nav>
         </div>
     </header>
     
-    <div class="main-container"></div>
-        <h1>Panel de Administración</h1>
-        <div class="button-container">
+    <div class="container my-5">
+        <h1 class="text-center">Panel de Administración</h1>
+        
+        <div class="d-flex justify-content-center my-4">
             <!-- Botones para agregar y eliminar producto -->
-            <button class="btn btn-add" onclick="location.href='/agregar_producto'">Agregar Producto</button>
-            <button class="btn btn-add" onclick="location.href='/actualizar_producto'">Eliminar Producto</button>
-            <button class="btn btn-delete" onclick="location.href='/eliminar_producto'">Eliminar Producto</button>
+            <button class="btn btn-success mx-2" onclick="location.href='/agregar_producto'">Agregar Producto</button>
+            <button class="btn btn-warning mx-2" onclick="location.href='/actualizar_producto'">Actualizar Producto</button>
+            <button class="btn btn-danger mx-2" onclick="location.href='/eliminar_producto'">Eliminar Producto</button>
         </div>
 
-        <h2>Lista de Usuarios</h2>
+        <h2 class="text-center">Lista de Usuarios</h2>
         
-        <table border="1">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Nombre</th>
-                    <th>Email</th>
-                    <th>Dirección</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for user in users %}
-                <tr>
-                    <td>{{ user.id }}</td>
-                    <td>{{ user.name }}</td>
-                    <td>{{ user.email }}</td>
-                    <td>{{ user.address }}</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover mt-4">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Email</th>
+                        <th>Dirección</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for user in users %}
+                    <tr>
+                        <td>{{ user.id }}</td>
+                        <td>{{ user.name }}</td>
+                        <td>{{ user.email }}</td>
+                        <td>{{ user.address }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
     </div>
+
+    <!-- Enlace al archivo JavaScript de Bootstrap y dependencias de jQuery y Popper.js -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        // Código JavaScript opcional para actualización dinámica
+        document.addEventListener("DOMContentLoaded", function() {
+            const username = "{{ username|safe }}";
+            if (username) {
+                const userLink = document.getElementById("user-link");
+                userLink.innerHTML = `<i class="icon-user"></i> ${username}`;
+            }
+        });
+    </script>
 </body>
 
 </html>

@@ -6,11 +6,18 @@ from bson.objectid import ObjectId
 from werkzeug.security import check_password_hash, generate_password_hash
 from dotenv import load_dotenv
 import os
+from datetime import timedelta
 
 load_dotenv()
 
 app = Flask(__name__)
 app.secret_key = os.getenv('APP_KEY')
+app.config["PERMANENT_SESSION_LIFETIME"] = timedelta(minutes=30)  # Duración de la sesión
+
+
+@app.context_processor
+def inject_user():
+    return dict(username=session.get("username"))
 
 # Conexion a Postgres
 db_cliente = Database()    
@@ -61,6 +68,7 @@ def login():
         # Iniciar sesión como usuario normal
         session['user_id'] = user['id']
         session['is_admin'] = False
+        session['username'] = user['name']
         return render_template('index.html', username=user['name'])  
 
     # Si las credenciales son incorrectas
@@ -112,7 +120,6 @@ def carrito():
 
 @app.route('/usuario')
 def usuario():
-    print(app.url_map)
     return render_template('usuario.html')
 
 @app.route('/logged')

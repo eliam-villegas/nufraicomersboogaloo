@@ -4,8 +4,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nufra</title>
-    <!-- Enlace al archivo CSS -->
+    <!-- Enlace al archivo CSS de Bootstrap -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- Enlace al archivo CSS personalizado -->
     <link rel="stylesheet" href="{{ url_for('static', filename='navbar.css') }}">
+    <style>
+        /* Estilo personalizado para la imagen de encabezado */
+        .header-image img {
+            width: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        .main-container {
+            margin-top: 20px; /* Ajusta este valor si necesitas más o menos espacio */
+        }
+    </style>
 </head>
 <body>
 
@@ -13,7 +26,6 @@
     <header>
         <div class="nav-container">
             <div class="logo">
-                <!-- Logo de la tienda -->
                 <a href="{{ url_for('index') }}">
                     <img src="https://raw.githubusercontent.com/eliam-villegas/nufraicomers/refs/heads/main/imagenes/nufra_logo-removebg-preview.png" alt="Logo" class="logo-img">
                 </a>
@@ -22,39 +34,68 @@
                 <ul class="nav-links">
                     <li><a href="/productos">Tienda</a></li>
                     <li><a href="/carrito"><i class="icon-cart"></i> Carrito</a></li>
-                    <li><a href="/usuario"><i class="icon-user"></i> Usuario</a></li>
+                    <li><a href="/usuario" id="user-link"><i class="icon-user"></i> 
+                        {% if username %}
+                            {{ username }}
+                        {% else %}
+                            Usuario
+                        {% endif %}
+                    </a></li>
                 </ul>
             </nav>
         </div>
     </header>
 
-    <!-- Sección principal -->
-    <main>
-        <!-- Quiénes somos -->
-        <section id="quienes-somos">
-            <h1>Quiénes Somos</h1>
-            <p>Somos Nafru E-Commerce, una tienda especializada en productos de alta calidad, ofreciendo la mejor experiencia para nuestros clientes.</p>
-        </section>
+    <div class="header-image">
+        <img src="{{ url_for('static', filename='images/image.png') }}" alt="Encabezado" class="w-100" style="object-fit: cover;">
+    </div>
 
-    <!-- Captadores de atención -->
-    <section id="captadores">
-        <h2>Captadores de Atención</h2>
-        <p>Nuestros productos se destacan por su exclusividad y calidad, captando la atención de aquellos que buscan lo mejor en el mercado.</p>
-    </section>
+    <!-- Sección principal con fondo blanco debajo de la imagen -->
+    <div class="container-fluid bg-light py-5 main-container">
+            
+            <!-- Quiénes somos -->
+            <section id="quienes-somos" class="text-center mb-5">
+                <h1 class="display-4">Quiénes Somos</h1>
+                <p class="lead">Somos Nafru E-Commerce, una tienda especializada en productos de alta calidad, ofreciendo la mejor experiencia para nuestros clientes.</p>
+            </section>
 
-    <!-- Nuestros servicios -->
-    <section id="servicios">
-        <h2>Nuestros Servicios</h2>
-        <ul>
-            <li>Venta de productos exclusivos</li>
-            <li>Atención personalizada</li>
-            <li>Envíos a todo el país</li>
-        </ul>
-    </section>
+            <!-- Captadores de atención -->
+            <section id="captadores" class="text-center mb-5">
+                <h2 class="h3">Captadores de Atención</h2>
+                <p>Nuestros productos se destacan por su exclusividad y calidad, captando la atención de aquellos que buscan lo mejor en el mercado.</p>
+            </section>
 
-    <!-- Imagen del CEO -->
-    <section id="ceo">
-        <h2>Conoce a nuestro CEO</h2>
-        <img src="ceo.jpg" alt="Imagen del CEO">
-    </section>
-</main>
+            <!-- Nuestros servicios -->
+            <section id="servicios" class="text-center mb-5">
+                <h2 class="h3">Nuestros Servicios</h2>
+                <ul class="list-unstyled">
+                    <li><i class="fas fa-check-circle text-success"></i> Venta de productos exclusivos</li>
+                    <li><i class="fas fa-check-circle text-success"></i> Atención personalizada</li>
+                    <li><i class="fas fa-check-circle text-success"></i> Envíos a todo el país</li>
+                </ul>
+            </section>
+
+            <!-- Imagen del CEO -->
+            <section id="ceo" class="text-center mb-5">
+                <h2 class="h3">Conoce a nuestro CEO</h2>
+                <img src="ceo.jpg" alt="Imagen del CEO" class="img-fluid rounded-circle mt-3" style="max-width: 200px;">
+            </section>
+    </div>
+
+    <!-- Enlace a JavaScript de Bootstrap y dependencias -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <!-- Código JavaScript opcional para actualización dinámica -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const username = "{{ username|safe }}";
+            if (username) {
+                const userLink = document.getElementById("user-link");
+                userLink.innerHTML = `<i class="icon-user"></i> ${username}`;
+            }
+        });
+    </script>
+</body>
+</html>
