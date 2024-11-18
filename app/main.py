@@ -32,7 +32,7 @@ db_cliente = Database()
 def register():
     return render_template('registro.html')
 
-
+# -------------------------------------------------- RUTAS TRANSBANK ------------------------------------------------- #
 @app.route('/iniciar_pago', methods=['POST'])
 def iniciar_pago():
     # Obtén el monto total desde el carrito u otro cálculo
@@ -77,6 +77,7 @@ def confirmar_pago():
         # Captura errores de Transbank y los muestra en una página de error
         return f"Error en la transacción: {str(e)}", 500
 
+# -------------------------------------------------- FIN RUTAS TRANSBANK --------------------------------------------- #
 @app.route('/admin')
 def admin_route():
     if 'user_id' not in session or not session.get('is_admin'):
@@ -153,12 +154,40 @@ productos_collection = db_productos['productos']
 def index():
     return render_template('index.html')
 
+# -------------------------------------------------- RUTAS APIS ------------------------------------------------------ #
+
 @app.route('/api/productos', methods=['GET'])
 def obtener_productos():
-    productos = list(productos_collection.find({}, {"_id": 1, "nombre": 1, "precio": 1, "descripcion": 1, "imagenes": 1, "stock": 1, "categoria": 1, "estado": 1}))
+    page = int(request.args.get('page', 1))
+    per_page = 10
+    total = productos_collection.count_documents({})
+    productos = list(
+        productos_collection.find({}, {"nombre": 1, "precio": 1, "stock": 1, "imagenes": 1})
+        .skip((page - 1) * per_page)
+        .limit(per_page)
+    )
     for producto in productos:
-        producto["_id"] = str(producto["_id"])  # Convertimos el ObjectId en string
-    return jsonify({"productos": productos})
+        producto["_id"] = str(producto["_id"])
+    return jsonify({
+        "productos": productos,
+        "totalPaginas": (total + per_page - 1) // per_page
+    })
+
+
+# Ruta para obtener un producto por su ID
+@app.route('/api/producto/<id>', methods=['GET'])
+def obtener_producto(id):
+
+    try:
+        producto = productos_collection.find_one({"_id": ObjectId(id)}, {"_id": 1, "nombre": 1, "precio": 1, "descripcion": 1, "imagenes": 1, "stock": 1, "categoria": 1, "estado": 1})
+        if producto:
+            producto["_id"] = str(producto["_id"])  # Convertir ObjectId a string
+            return jsonify(producto)
+        return jsonify({"error": "Producto no encontrado"}), 404
+    except Exception as e:
+        return jsonify({"error": "ID inválido"}), 499
+
+# -------------------------------------------------- FIN RUTAS APIS ------------------------------------------------- #
 
 @app.route('/productos')
 def productos():
@@ -176,14 +205,7 @@ def usuario():
 @app.route('/logged')
 def logged():
     return render_template('logged.html')
-# Ruta para obtener un producto por su ID
-@app.route('/api/producto/<id>', methods=['GET'])
-def obtener_producto(id):
-    producto = productos_collection.find_one({"_id": ObjectId(id)}, {"_id": 1, "nombre": 1, "precio": 1, "descripcion": 1, "imagenes": 1, "stock": 1, "categoria": 1, "estado": 1})
-    if producto:
-        producto["_id"] = str(producto["_id"])  # Convertir ObjectId a string
-        return jsonify(producto)
-    return jsonify({"error": "Producto no encontrado"}), 404
+
 
 
 
@@ -268,6 +290,15 @@ def detalle_producto(id):
         producto["_id"] = str(producto["_id"])  # Convertimos ObjectId a string
         return render_template('detalle_producto.html', producto=producto)
     return jsonify({"error": "Producto no encontrado"}), 404
+
+# Ruta para la página de inventario
+@app.route('/inventario')
+def inventario():
+    return render_template('inventario.html')
+
+@app.route('/inventario/detalle_producto/<id>')
+def inventario_detalle_producto(id):
+    return render_template('inventario_detalle_producto.html', producto_id=id)
 
 
 if __name__ == '__main__':
