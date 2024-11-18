@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Inventario</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='inventario.css') }}">
+</head>
+<body>
+
+    <h1>Inventario</h1>
+
+    <!-- Contenedor para el botón y la tabla -->
+    <div id="contenidoInventario">
+
+        <!-- Botón para agregar un producto -->
+        <div class="boton-agregar">
+            <button onclick="redirigirAgregarProducto()">Agregar Producto</button>
+        </div>
+
+        <!-- Contenedor de la tabla -->
+        <div id="tablaContainer">
+            <table id="productosTabla">
+                <thead>
+                    <tr>
+                        <th>Imagen</th>
+                        <th>Nombre</th>
+                        <th>Precio</th>
+                        <th>Stock</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Contenido cargado dinámicamente -->
+                </tbody>
+            </table>
+            <div id="paginacion">
+                <!-- Controles de paginación cargados dinámicamente -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Redirige a la página de agregar producto
+        function redirigirAgregarProducto() {
+            window.location.href = "/agregar_producto";
+        }
+    </script>
+    <script src="{{ url_for('static', filename='inventario.js') }}"></script>
+</body>
+</html>
