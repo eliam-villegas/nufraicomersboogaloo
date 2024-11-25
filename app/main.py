@@ -206,9 +206,6 @@ def usuario():
 def logged():
     return render_template('logged.html')
 
-
-
-
 # Ruta para manejar tanto GET (renderizar el formulario) como POST (procesar el formulario)
 @app.route('/agregar_producto', methods=['GET', 'POST'])
 def agregar_producto():
