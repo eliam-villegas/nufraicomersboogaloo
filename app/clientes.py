@@ -7,6 +7,7 @@ from werkzeug.security import generate_password_hash
 load_dotenv()
 
 class Database:
+    #se establece conexion con la base de datos postgres
     def __init__(self):
         self.connection = None
         self._connect_to_db()
@@ -34,27 +35,6 @@ class Database:
         """Creación de tablas si no existen y usuario administrador"""
         try:
             with self.connection.cursor() as cursor:
-                # Crear tabla de usuarios
-                cursor.execute("""
-                CREATE TABLE IF NOT EXISTS users (
-                    id SERIAL PRIMARY KEY,
-                    name VARCHAR(80) NOT NULL,
-                    email VARCHAR(120) UNIQUE NOT NULL,
-                    address VARCHAR(200) NOT NULL,
-                    password VARCHAR(200) NOT NULL
-                );
-                """)
-
-                # Crear tabla de compras
-                cursor.execute("""
-                CREATE TABLE IF NOT EXISTS purchases (
-                    id SERIAL PRIMARY KEY,
-                    user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
-                    product_name VARCHAR(100) NOT NULL,
-                    amount INTEGER NOT NULL
-                );
-                """)
-                print("Tablas creadas o verificadas correctamente")
                 
                 admin_email = os.getenv('ADMIN_USER')
                 admin_password = os.getenv('ADMIN_PASS')
@@ -86,11 +66,12 @@ class Database:
         """Inserta un nuevo usuario en la base de datos"""
         try:
             with self.connection.cursor() as cursor:
+                #el usuario por defecto tiene el rol de usuario.
                 cursor.execute("""
-                INSERT INTO users (name, email, address, password)
-                VALUES (%s, %s, %s, %s)
+                INSERT INTO users (name, email, address, password,role)
+                VALUES (%s, %s, %s, %s,%s)
                 RETURNING id;
-                """, (name, email, address, password))
+                """, (name, email, address, password,'usuario'))
                 user_id = cursor.fetchone()[0]
                 print(f"Usuario insertado con ID: {user_id}")
                 return user_id
