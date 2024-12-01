@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import './RegisterForm.css';
 
+//de momento esta archivo .js no es funcional en el codigo.
+
 function RegisterForm() {
     const [formData, setFormData] = useState({
         name: '',

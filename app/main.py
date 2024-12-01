@@ -7,6 +7,7 @@ from werkzeug.security import check_password_hash, generate_password_hash
 from dotenv import load_dotenv
 import os
 from datetime import timedelta
+from database import get_db_postgres
 
 load_dotenv()
 
@@ -35,18 +36,26 @@ def admin_route():
 
 @app.route('/data_base/register_user', methods=['POST'])
 def register_user():
-    data = request.get_json()
-    password_hash = generate_password_hash(data['password'])
-    user_id = db_cliente.insert_user(
-        name=data['name'],
-        email=data['email'],
-        address=data['address'],
-        password=password_hash
-    )
-    if user_id:
-        return jsonify({"id": user_id, "username": data['name'], "email": data['email']})
-    else:
-        return jsonify({"error": "Error al registrar el usuario"}), 500
+
+    username = request.form['name']
+    email = request.form['email']
+    address = request.form['address']
+    password_hash = generate_password_hash(request.form['password'])
+    role = 'usuario'
+
+    conn = get_db_postgres()
+    cur = conn.cursor()
+
+    try:
+        cur.execute("""INSERT INTO users (name,email,address,password,role) VALUES (%s,%s,%s,%s,%s)""",
+                    (username,email,address,password_hash,role))
+        conn.commit()
+        cur.close()
+        return redirect(url_for('usuario'))
+    except Exception as e:
+        conn.rollback()
+        cur.close()
+        return str(e)
     
 @app.route('/login', methods=['GET', 'POST'])
 def login():
