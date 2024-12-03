@@ -20,19 +20,6 @@
                     <img src="https://raw.githubusercontent.com/eliam-villegas/nufraicomers/refs/heads/main/imagenes/nufra_logo-removebg-preview.png" alt="Logo" class="logo-img">
                 </a>
             </div>
-            <nav>
-                <ul class="nav-links">
-                    <li><a href="/productos">Tienda</a></li>
-                    <li><a href="/carrito"><i class="icon-cart"></i> Carrito</a></li>
-                    <li><a href="/usuario" id="user-link"><i class="icon-user"></i> 
-                        {% if username %}
-                            {{ username }}
-                        {% else %}
-                            Usuario
-                        {% endif %}
-                    </a></li>
-                </ul>
-            </nav>
         </div>
     </header>
     
@@ -53,6 +40,7 @@
             <div class="form-footer">
                 <p>¿No tienes cuenta? <a href="/registro">Regístrate aquí</a></p>
                 <p><a href="#">¿Olvidaste tu contraseña?</a></p>
+                <p><a href="/visitor">Seguir como visitante</a></p>
             </div>
         </div>
     </div>

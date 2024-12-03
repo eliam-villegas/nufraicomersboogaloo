@@ -58,6 +58,11 @@ def register_user():
         cur.close()
         return str(e)
     
+@app.route('/visitor', methods=['GET','POST'])
+def visitor():
+    session['username'] = 'visitante'
+    session['role'] = 'invitado'
+    
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':

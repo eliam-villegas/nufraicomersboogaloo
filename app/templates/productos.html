@@ -1,39 +1,11 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <title>Catálogo de Productos</title>
-    <!-- Enlace al archivo CSS -->
+{% extends "header.html" %}
+
+{% block extra_css %}
     <link rel="stylesheet" href="{{ url_for('static', filename='navbar.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='productos.css') }}">
-</head>
-<body>
+{% endblock %}
 
-    <!-- Barra de navegación -->
-    <header>
-        <div class="nav-container">
-            <div class="logo">
-                <!-- Logo de la tienda -->
-                <a href="{{ url_for('index') }}">
-                    <img src="https://raw.githubusercontent.com/eliam-villegas/nufraicomers/refs/heads/main/imagenes/nufra_logo-removebg-preview.png" alt="Logo" class="logo-img">
-                </a>
-            </div>
-            <nav>
-                <ul class="nav-links">
-                    <li><a href="/productos">Tienda</a></li>
-                    <li><a href="/carrito"><i class="icon-cart"></i> Carrito</a></li>
-                    <li><a href="/usuario" id="user-link"><i class="icon-user"></i> 
-                        {% if username %}
-                            {{ username }}
-                        {% else %}
-                            Usuario
-                        {% endif %}
-                    </a></li>
-                </ul>
-            </nav>
-        </div>
-    </header>
-
+{% block content %}
     <!-- Título del Catálogo de Productos -->
     <h1>Catálogo de Productos</h1>
 
@@ -55,5 +27,6 @@
             }
         });
     </script>
+{% endblock %}
 </body>
 </html>

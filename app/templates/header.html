@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nufra</title>
+    <!-- Enlace al archivo CSS de Bootstrap -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- Enlace al archivo CSS personalizado -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='navbar.css') }}">
+    <style>
+        /* Estilo personalizado para la imagen de encabezado */
+        .header-image img {
+            width: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        .main-container {
+            margin-top: 20px; /* Ajusta este valor si necesitas más o menos espacio */
+        }
+    </style>
+    {% block extra_css %}
+    <!-- css especifico-->
+     {% endblock %}
+</head>
+<body>
+    <!-- Barra de navegación -->
+    <header>
+        <div class="nav-container">
+            <div class="logo">
+                <a href="{{ url_for('index') }}">
+                    <img src="https://raw.githubusercontent.com/eliam-villegas/nufraicomers/refs/heads/main/imagenes/nufra_logo-removebg-preview.png" alt="Logo" class="logo-img">
+                </a>
+            </div>
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="/productos">Tienda</a></li>
+                    <li><a href="/carrito"><i class="icon-cart"></i> Carrito</a></li>
+
+                    {% if in_session %}
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-bs-toggle="dropdown"><i class="icon-user"></i>Cuenta</a>
+                            <ul class="dropdown-menu">
+                                <li><a href="{{ url_for('clientes.account')}}">Perfil</a></li>
+                                <li><a href="{{ url_for('clientes.logout')}}">Cerrar sesion</a></li>
+                            </ul>
+                        </li>
+                    {% else %}
+                        <li><a href="/usuario">Iniciar sesion</a></li>
+                        <li><a href="/registro">Registrarse</a></li>
+                    {% endif %}
+                </ul>
+            </nav>
+        </div>
+    </header>
+    {% block content %}
+    <!-- contenido de la pagina-->
+    {% endblock %}
+
+    <footer>
+        <p>&copy; 2024 Nufra E-Commerce. Todods los derechos reservados</p>
+    </footer>
+</body>
