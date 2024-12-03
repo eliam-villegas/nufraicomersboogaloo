@@ -52,9 +52,9 @@ class Database:
                 
                 if not admin_user:
                     cursor.execute("""
-                    INSERT INTO users (name, email, address, password)
-                    VALUES (%s, %s, %s, %s);
-                    """, ("Admin", admin_email, "Admin Address", hashed_password))
+                    INSERT INTO users (name, email, address, password,role)
+                    VALUES (%s, %s, %s, %s, %s);
+                    """, ("Admin", admin_email, "Admin Address", hashed_password,"admin"))
                     print("Usuario administrador creado correctamente")
                 else:
                     print("El usuario administrador ya existe")
@@ -105,7 +105,27 @@ class Database:
                         "name": user[1],
                         "email": user[2],
                         "address": user[3],
-                        "password": user[4]
+                        "password": user[4],
+                        "role": user[5]
+                    }
+        except Exception as e:
+            print(f"Error al buscar el usuario: {e}")
+        return None
+    
+    def get_user_by_username(self, username):
+        try:
+            with self.connection.cursor() as cursor:
+                cursor.execute("SELECT * FROM users WHERE name = %s;", (username,))
+                user = cursor.fetchone()
+                if user:
+                    # Devolver los datos del usuario en forma de diccionario
+                    return {
+                        "id": user[0],
+                        "name": user[1],
+                        "email": user[2],
+                        "address": user[3],
+                        "password": user[4],
+                        "role": user[5]
                     }
         except Exception as e:
             print(f"Error al buscar el usuario: {e}")

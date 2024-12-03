@@ -61,6 +61,34 @@ def register_user():
 def login():
     if request.method == 'POST':
         data = request.get_json()
+        email = data['email']
+        password = data['password']
+    else:
+        email = request.args.get('email')
+        password = request.args.get('password')
+
+    user = db_cliente.get_user_by_email(email)
+
+    #si las contraseñas coinciden y el correo tambien
+    if check_password_hash(user['password'],password) and email == user['email']:
+        session['user_id'] = user['id']
+        session['username'] = user['username']
+        session['role'] = user['role']
+
+        #si el usuario inicio sesion y tiene el rol de admin
+        if 'user_id' in session and user['role'] == "admin":
+            return admin_panel()
+        
+        #si el usuario inicio sesion pero no es admin
+        return render_template('index.html', username=user['name'])
+    else:
+        #si las credenciales no son correctas al iniciar la sesion
+        return jsonify({"error": "Credenciales incorrectas"}), 401
+
+
+
+    """if request.method == 'POST':
+        data = request.get_json()
         username = data['username']
         password = data['password']
     else:  # Si el método es GET
@@ -81,11 +109,11 @@ def login():
         return render_template('index.html', username=user['name'])  
 
     # Si las credenciales son incorrectas
-    return jsonify({"error": "Credenciales incorrectas"}), 401
+    return jsonify({"error": "Credenciales incorrectas"}), 401"""
 
 def admin_panel():
-    if 'user_id' not in session or not session.get('is_admin'):
-        return redirect(url_for('login'))
+    """if 'user_id' not in session or not session.get('role') == 'admin':
+        return redirect(url_for('login'))"""
 
     # Obtener todos los usuarios de la base de datos
     users = db_cliente.get_all_users()
