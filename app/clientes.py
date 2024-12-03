@@ -3,6 +3,7 @@ import psycopg2
 import time
 from dotenv import load_dotenv
 from werkzeug.security import generate_password_hash
+from database import get_db_postgres
 
 load_dotenv()
 
@@ -94,20 +95,25 @@ class Database:
             print(f"Error al insertar la compra: {e}")
 
     def get_user_by_email(self, email):
+        conn = get_db_postgres()
+        if conn is None:
+            return None
         try:
-            with self.connection.cursor() as cursor:
-                cursor.execute("SELECT * FROM users WHERE email = %s;", (email,))
-                user = cursor.fetchone()
-                if user:
-                    # Devolver los datos del usuario en forma de diccionario
-                    return {
-                        "id": user[0],
-                        "name": user[1],
-                        "email": user[2],
-                        "address": user[3],
-                        "password": user[4],
-                        "role": user[5]
-                    }
+            cursor = conn.cursor()
+            cursor.execute('SELECT * FROM users WHERE email = %s;', (email,))
+            user = cursor.fetchone()
+            cursor.close()
+            conn.close()
+            return user
+            """# Devolver los datos del usuario en forma de diccionario
+                return {
+                    "id": user[0],
+                    "name": user[1],
+                    "email": user[2],
+                    "address": user[3],
+                    "password": user[4],
+                    "role": user[5]
+                }"""
         except Exception as e:
             print(f"Error al buscar el usuario: {e}")
         return None

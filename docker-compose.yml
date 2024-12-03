@@ -12,6 +12,7 @@ services:
       - "5000:5000"
     environment:
       - DATABASE_URI=${DATABASE_URI}
+      - APP_KEY=${APP_KEY}
     depends_on:
       - postgres
 

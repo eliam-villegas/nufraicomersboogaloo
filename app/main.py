@@ -14,6 +14,7 @@ load_dotenv()
 app = Flask(__name__)
 app.secret_key = os.getenv('APP_KEY')
 app.config["PERMANENT_SESSION_LIFETIME"] = timedelta(minutes=30)  # Duración de la sesión
+app.config['SESSION_TYPE'] = 'filesystem'
 
 
 @app.context_processor
@@ -69,21 +70,27 @@ def login():
 
     user = db_cliente.get_user_by_email(email)
 
-    #si las contraseñas coinciden y el correo tambien
-    if check_password_hash(user['password'],password) and email == user['email']:
-        session['user_id'] = user['id']
-        session['username'] = user['username']
-        session['role'] = user['role']
+    if user is not None:
+        #si las contraseñas coinciden y el correo tambien
+        if check_password_hash(user[4],password) and email == user[2]:
+            session['user_id'] = user[0]
+            session['username'] = user[1]
+            session['role'] = user[5]
 
-        #si el usuario inicio sesion y tiene el rol de admin
-        if 'user_id' in session and user['role'] == "admin":
-            return admin_panel()
-        
-        #si el usuario inicio sesion pero no es admin
-        return render_template('index.html', username=user['name'])
+            #si el usuario inicio sesion y tiene el rol de admin
+            if 'user_id' in session:
+                if session['role'] == "admin":
+                    return admin_panel()
+                else:
+                    #si el usuario inicio sesion pero no es admin
+                    return render_template('index.html', username=session['username'])
+            else:
+                return jsonify({"error": "Rol de cluenta no identificado"}), 402
+        else:
+            #si las credenciales no son correctas al iniciar la sesion
+            return jsonify({"error": "Credenciales incorrectas"}), 401
     else:
-        #si las credenciales no son correctas al iniciar la sesion
-        return jsonify({"error": "Credenciales incorrectas"}), 401
+        return jsonify({'error': 'Ususario no encontrado o no existe'}), 404
 
 
 
