@@ -1,44 +1,20 @@
-<!DOCTYPE html>
-<html lang="es">
+{% extends "header.html" %}
 
-<head>
-    <meta charset="UTF-8">
-    <title>Carrito de Compra</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/navbar.css') }}">
+{% block extra_css %}
     <link rel="stylesheet" href="{{ url_for('static', filename='css/ver_carrito.css') }}">
-</head>
+{% endblock %}
 
-<body>
-    <!-- Barra de navegación -->
-    <header>
-        <div class="nav-container">
-            <div class="logo">
-                <a href="{{ url_for('index') }}">
-                    <img src="https://raw.githubusercontent.com/eliam-villegas/nufraicomers/refs/heads/main/imagenes/nufra_logo-removebg-preview.png" alt="Logo" class="logo-img">
-                </a>
-            </div>
-            <nav>
-                <ul class="nav-links">
-                    <li><a href="/productos">Tienda</a></li>
-                    <li><a href="/carrito/ver"><i class="icon-cart"></i> Carrito</a></li>
-                    <li><a href="/usuario"><i class="icon-user"></i> Usuario</a></li>
-                </ul>
-            </nav>
-        </div>
-    </header>
+{% block content %}
+<main>
+    <h1>Carrito de Compras</h1>
+    <div id="carritoContainer"></div>
 
-    <!-- Contenido principal del carrito -->
-    <main>
-        <h1>Carrito de Compras</h1>
-        <div id="carritoContainer"></div>
+    <!-- Subtotal y botón de pago -->
+    <div class="subtotal">
+        <p><strong>Subtotal:</strong> $<span id="subtotal">0.00</span></p>
+        <button onclick="iniciarPago()">Ir a Pagar</button>
+    </div>
+</main>
 
-        <!-- Subtotal y botón de pago -->
-        <div class="subtotal">
-            <p><strong>Subtotal:</strong> $<span id="subtotal">0.00</span></p>
-            <button onclick="iniciarPago()">Ir a Pagar</button>
-        </div>
-    </main>
-
-    <script src="{{ url_for('static', filename='js/carrito-html.js') }}"></script>
-</body>
-</html>
+<script src="{{ url_for('static', filename='js/carrito-html.js') }}"></script>
+{% endblock content%}

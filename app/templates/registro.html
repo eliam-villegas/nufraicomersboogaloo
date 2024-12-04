@@ -1,29 +1,10 @@
-<!DOCTYPE html>
-<html lang="es">
+{% extends "header.html" %}
 
-<head>
-    <meta charset="UTF-8">
-    <title>Registro</title>
-    <!-- Enlace al archivo CSS -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/navbar.css') }}">
+{% block extra_css %}
     <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
-</head>
+{% endblock %}
 
-<body>
-
-    <!-- Barra de navegación -->
-    <header>
-        <div class="nav-container">
-            <div class="logo">
-                <!-- Logo de la tienda -->
-                <a href="{{ url_for('index') }}">
-                    <img src="https://raw.githubusercontent.com/eliam-villegas/nufraicomers/refs/heads/main/imagenes/nufra_logo-removebg-preview.png" alt="Logo" class="logo-img">
-                </a>
-            </div>
-        </div>
-    </header>
-    
-    <!-- Contenedor principal para centrar el formulario -->
+{% block content %}
     <div class="main-container">
         <div class="login-container">
             <h2>Registro de Usuario</h2>
@@ -61,7 +42,5 @@
                 userLink.innerHTML = `<i class="icon-user"></i> ${username}`;
             }
         });
-    </script>
-</body>
-
-</html>
+</script>
+{% endblock content%}
