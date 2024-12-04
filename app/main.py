@@ -3,7 +3,6 @@ from flask import Flask, render_template, jsonify, request, redirect, url_for, s
 from carrito import carrito_bp
 from database import get_db
 from clientes import Database
-from carrito import carrito_bp
 from bson.objectid import ObjectId
 from werkzeug.security import check_password_hash, generate_password_hash
 from dotenv import load_dotenv
@@ -21,7 +20,7 @@ app = Flask(__name__)
 app.secret_key = 'e5f67a4efab7f3c3d5a82a4a27f601b8742e3edbd8ab6df1a68eac73c9d45e3f'
 app.config["PERMANENT_SESSION_LIFETIME"] = timedelta(minutes=30)  # Duración de la sesión
 app.config['SESSION_TYPE'] = 'filesystem'
-
+app.register_blueprint(carrito_bp)
 
 @app.context_processor
 def inject_user():

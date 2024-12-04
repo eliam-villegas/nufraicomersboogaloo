@@ -1,32 +1,11 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <title>Detalle del Producto</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/navbar.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/detalle_producto.css') }}">
-</head>
-<body>
+{% extends "header.html" %}
 
-    <!-- Barra de navegación -->
-    <header>
-        <div class="nav-container">
-            <div class="logo">
-                <a href="{{ url_for('index') }}">
-                    <img src="https://raw.githubusercontent.com/eliam-villegas/nufraicomers/refs/heads/main/imagenes/nufra_logo-removebg-preview.png" alt="Logo" class="logo-img">
-                </a>
-            </div>
-            <nav>
-                <ul class="nav-links">
-                    <li><a href="/productos">Tienda</a></li>
-                    <li><a href="/carrito"><i class="icon-cart"></i> Carrito</a></li>
-                    <li><a href="/usuario"><i class="icon-user"></i> Usuario</a></li>
-                </ul>
-            </nav>
-        </div>
-    </header>
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/detalle_producto.css') }}">
+{% endblock %}
 
-    <!-- Contenedor de detalles del producto -->
+{% block content %}
+<div class="main-container">
     <main class="producto-detalle">
         <div class="imagen">
             <img src="{{ producto.imagenes[0] if producto.imagenes else 'https://via.placeholder.com/300' }}" alt="{{ producto.nombre }}">
@@ -43,18 +22,20 @@
             <button onclick="añadirAlCarrito('{{ producto._id }}')">Añadir al Carrito</button>
         </div>
     </main>
+</div>
 
-    <script>
-        async function añadirAlCarrito(productoId) {
-            const cantidad = document.getElementById('cantidad').value;
-            const response = await fetch('/api/carrito/agregar', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ producto_id: productoId, cantidad: parseInt(cantidad) })
-            });
-            const data = await response.json();
-            alert(data.mensaje);
-        }
-    </script>
-</body>
-</html>
+<script>
+    async function añadirAlCarrito(productoId) {
+        const cantidad = document.getElementById('cantidad').value;
+        const response = await fetch('/api/carrito/agregar', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ producto_id: productoId, cantidad: parseInt(cantidad) })
+        });
+        const data = await response.json();
+        alert(data.mensaje);
+    }
+</script>
+{% endblock content%}
+
+

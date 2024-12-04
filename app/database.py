@@ -7,6 +7,7 @@ import psycopg2
 def get_db():
     client = MongoClient('mongodb+srv://benjaminsilva:benjaminsilva@cluster0.uawrn.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0')
     db = client['mi_ecommerce']
+    print('conexion a mongo exitosa')
     return db
 
 def get_db_postgres():
