@@ -4,23 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nufra</title>
-    <!-- Enlace al archivo CSS de Bootstrap -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <!-- Enlace al archivo CSS personalizado -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/navbar.css') }}">
-    <style>
-        /* Estilo personalizado para la imagen de encabezado */
-        .header-image img {
-            width: 100%;
-            object-fit: cover;
-            display: block;
-        }
-        .main-container {
-            margin-top: 20px; /* Ajusta este valor si necesitas más o menos espacio */
-        }
-    </style>
     {% block extra_css %}
-    <!-- css especifico-->
+    <!-- css específico-->
      {% endblock %}
 </head>
 <body>
@@ -39,25 +26,33 @@
 
                     {% if in_session %}
                         <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-bs-toggle="dropdown"><i class="icon-user"></i>Cuenta</a>
+                            <a href="#" class="dropdown-toggle" data-bs-toggle="dropdown"><i class="icon-user"></i> Cuenta</a>
                             <ul class="dropdown-menu">
                                 <li><a href="{{ url_for('clientes.account')}}">Perfil</a></li>
-                                <li><a href="{{ url_for('clientes.logout')}}">Cerrar sesion</a></li>
+                                <li><a href="{{ url_for('clientes.logout')}}">Cerrar sesión</a></li>
                             </ul>
                         </li>
                     {% else %}
-                        <li><a href="/usuario">Iniciar sesion</a></li>
+                        <li><a href="/usuario">Iniciar sesión</a></li>
                         <li><a href="/registro">Registrarse</a></li>
                     {% endif %}
                 </ul>
             </nav>
         </div>
     </header>
+    
     {% block content %}
-    <!-- contenido de la pagina-->
+    <!-- contenido de la página-->
     {% endblock %}
 
+    <!-- Footer -->
     <footer>
-        <p>&copy; 2024 Nufra E-Commerce. Todods los derechos reservados</p>
+        <p>&copy; 2024 Nufra E-Commerce. Todos los derechos reservados</p>
     </footer>
+
+    <!-- Scripts de Bootstrap (necesarios para algunas interacciones como el dropdown) -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
+</html>
