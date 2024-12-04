@@ -1,4 +1,4 @@
-from flask import Flask, render_template, jsonify, request, redirect, url_for, session
+from flask import Flask, render_template, jsonify, request, redirect, url_for, session, g
 
 from carrito import carrito_bp
 from database import get_db
@@ -25,6 +25,12 @@ app.register_blueprint(carrito_bp)
 @app.context_processor
 def inject_user():
     return dict(username=session.get("username"))
+
+@app.before_request
+def before_request():
+    g.in_session = 'user_id' in session
+    g.name = session.get('username')
+    g.role = session.get('role')
 
 
 # Configuración de Transbank para el modo de prueba
@@ -85,6 +91,7 @@ def confirmar_pago():
         return f"Error en la transacción: {str(e)}", 500
 
 # -------------------------------------------------- FIN RUTAS TRANSBANK --------------------------------------------- #
+
 @app.route('/admin')
 def admin_route():
     if 'user_id' not in session or not session.get('is_admin'):
@@ -115,11 +122,6 @@ def register_user():
         cur.close()
         return str(e)
     
-@app.route('/visitor', methods=['GET','POST'])
-def visitor():
-    session['username'] = 'visitante'
-    session['role'] = 'invitado'
-    
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
@@ -137,6 +139,7 @@ def login():
         if check_password_hash(user[4],password) and email == user[2]:
             session['user_id'] = user[0]
             session['username'] = user[1]
+            session['email'] = user[2]
             session['role'] = user[5]
 
             #si el usuario inicio sesion y tiene el rol de admin
@@ -145,7 +148,7 @@ def login():
                     return admin_panel()
                 else:
                     #si el usuario inicio sesion pero no es admin
-                    return render_template('index.html', username=session['username'])
+                    return render_template('index.html', in_session=True, role=session['role'], name=session['username'])
             else:
                 return jsonify({"error": "Rol de cluenta no identificado"}), 402
         else:
@@ -196,10 +199,25 @@ def protected():
         return redirect(url_for('login'))
     return jsonify({"message": "Bienvenido a la ruta protegida"})
 
+@app.route('/account' ,methods=['GET', 'POST'])
+def account():
+    if 'user_id' in session:
+        # Obtén los datos del usuario desde la base de datos
+        user = db_cliente.get_user_by_username(session['username'])
+        if not g.in_session:
+            return redirect(url_for('login'))  # Redirigir si no está logueado
+
+        if user is None:
+            return redirect(url_for('login'))
+    
+    return render_template('account.html', in_session=g.in_session, datos=user)
+
 @app.route('/logout')
 def logout():
-    session.pop('user_id', None)
-    return jsonify({"message": "Cierre de sesión exitoso"})
+    if 'user_id' in session:
+        session.pop('user_id', None)
+        return redirect(url_for('index'))
+
 
 # Conexión a MongoDB
 db_productos = get_db()
@@ -207,7 +225,10 @@ productos_collection = db_productos['productos']
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    if 'user_id' in session:
+        return render_template('index.html',in_session=g.in_session,name=g.name,role=g.role)
+    else:
+        return render_template('index.html',in_session=False)
 
 # -------------------------------------------------- RUTAS APIS ------------------------------------------------------ #
 

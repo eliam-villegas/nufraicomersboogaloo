@@ -118,6 +118,22 @@ class Database:
             print(f"Error al buscar el usuario: {e}")
         return None
     
+    def get_user_by_id(self, id):
+        conn = get_db_postgres()
+        if conn is None:
+            return None
+        try:
+            cursor = conn.cursor()
+            cursor.execute('SELECT * FROM users WHERE id = %i;', (id,))
+            user = cursor.fetchone()
+            cursor.close()
+            conn.close()
+            return user
+        except Exception as e:
+            print(f"Error al buscar el usuario: {e}")
+        return None
+
+    
     def get_user_by_username(self, username):
         try:
             with self.connection.cursor() as cursor:

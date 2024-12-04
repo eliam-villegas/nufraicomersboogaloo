@@ -26,10 +26,10 @@
 
                     {% if in_session %}
                         <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-bs-toggle="dropdown"><i class="icon-user"></i> Cuenta</a>
+                            <a href="#" class="dropdown-toggle" data-bs-toggle="dropdown"><i class="icon-user"></i> {{ name }} </a>
                             <ul class="dropdown-menu">
-                                <li><a href="{{ url_for('clientes.account')}}">Perfil</a></li>
-                                <li><a href="{{ url_for('clientes.logout')}}">Cerrar sesión</a></li>
+                                <li><a href="/account">Perfil</a></li>
+                                <li><a href="/logout">Cerrar sesión</a></li>
                             </ul>
                         </li>
                     {% else %}
