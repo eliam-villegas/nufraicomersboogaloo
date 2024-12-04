@@ -23,12 +23,15 @@
                 <ul class="nav-links">
                     <li><a href="/productos">Tienda</a></li>
                     <li><a href="/carrito"><i class="icon-cart"></i> Carrito</a></li>
-
-                    {% if in_session %}
+    
+                    {% if g.in_session == True %}
                         <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-bs-toggle="dropdown"><i class="icon-user"></i> {{ name }} </a>
+                            <a href="javascript:void(0)" class="dropdown-toggle" onclick="toggleDropdown()"><i class="icon-user"></i> {{ g.username }}</a>
                             <ul class="dropdown-menu">
                                 <li><a href="/account">Perfil</a></li>
+                                {% if g.role == 'admin' %}
+                                    <li><a href="/admin">Admin Panel</a></li>
+                                {% endif %}
                                 <li><a href="/logout">Cerrar sesión</a></li>
                             </ul>
                         </li>
@@ -41,6 +44,13 @@
         </div>
     </header>
     
+    <script>
+        function toggleDropdown() {
+            var dropdownMenu = document.querySelector('.dropdown-menu');
+            dropdownMenu.style.display = (dropdownMenu.style.display === 'block') ? 'none' : 'block';
+        }
+    </script>
+    
     {% block content %}
     <!-- contenido de la página-->
     {% endblock %}
@@ -49,6 +59,34 @@
     <footer>
         <p>&copy; 2024 Nufra E-Commerce. Todos los derechos reservados</p>
     </footer>
+
+    <style>
+        /* Estilos para el dropdown */
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+    
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            background-color: #f1f1f1;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px rgba(0,0,0,0.2);
+            z-index: 1;
+        }
+    
+        .dropdown-menu li a {
+            color: black;
+            padding: 8px 16px;
+            text-decoration: none;
+            display: block;
+        }
+    
+        .dropdown-menu li a:hover {
+            background-color: #ddd;
+        }
+    </style>
 
     <!-- Scripts de Bootstrap (necesarios para algunas interacciones como el dropdown) -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>

@@ -28,9 +28,14 @@ def inject_user():
 
 @app.before_request
 def before_request():
-    g.in_session = 'user_id' in session
-    g.name = session.get('username')
-    g.role = session.get('role')
+    if 'user_id' in session:
+        g.in_session = True
+        g.user_id = session['user_id']
+        g.username = session['username']
+        g.role = session['role']
+    else:
+        g.in_session = False
+
 
 
 # Configuración de Transbank para el modo de prueba
@@ -94,9 +99,21 @@ def confirmar_pago():
 
 @app.route('/admin')
 def admin_route():
-    if 'user_id' not in session or not session.get('is_admin'):
+    if 'user_id' not in session or session.get('role') != 'admin':
         return jsonify({"error": "Acceso denegado"}), 403
-    return render_template('admin.html')
+    return admin_panel()
+
+@app.route('/invitado')
+def invitado():
+    if 'user_id' in session:
+        return redirect(url_for('index'))
+    else:
+        session['username'] = 'Invitado'
+        session['email'] = 'None'
+        session['role'] = 'invitado'
+
+        return redirect(url_for('index'))
+
 
 
 @app.route('/data_base/register_user', methods=['POST'])
@@ -144,11 +161,7 @@ def login():
 
             #si el usuario inicio sesion y tiene el rol de admin
             if 'user_id' in session:
-                if session['role'] == "admin":
-                    return admin_panel()
-                else:
-                    #si el usuario inicio sesion pero no es admin
-                    return render_template('index.html', in_session=True, role=session['role'], name=session['username'])
+                return redirect(url_for('index'))
             else:
                 return jsonify({"error": "Rol de cluenta no identificado"}), 402
         else:
@@ -156,32 +169,6 @@ def login():
             return jsonify({"error": "Credenciales incorrectas"}), 401
     else:
         return jsonify({'error': 'Ususario no encontrado o no existe'}), 404
-
-
-
-    """if request.method == 'POST':
-        data = request.get_json()
-        username = data['username']
-        password = data['password']
-    else:  # Si el método es GET
-        username = request.args.get('username')
-        password = request.args.get('password')
-
-    if username == os.getenv('ADMIN_USER') and password == os.getenv('ADMIN_PASS'):
-        session['user_id'] = 'admin'
-        session['is_admin'] = True
-        return admin_panel()
-    
-    user = db_cliente.get_user_by_username(username)
-    if user and check_password_hash(user['password'], password):
-        # Iniciar sesión como usuario normal
-        session['user_id'] = user['id']
-        session['is_admin'] = False
-        session['username'] = user['name']
-        return render_template('index.html', username=user['name'])  
-
-    # Si las credenciales son incorrectas
-    return jsonify({"error": "Credenciales incorrectas"}), 401"""
 
 def admin_panel():
     """if 'user_id' not in session or not session.get('role') == 'admin':
@@ -210,12 +197,17 @@ def account():
         if user is None:
             return redirect(url_for('login'))
     
-    return render_template('account.html', in_session=g.in_session, datos=user)
+    return render_template('account.html', datos=user)
 
 @app.route('/logout')
 def logout():
     if 'user_id' in session:
         session.pop('user_id', None)
+
+        session['username'] = 'Invitado'
+        session['email'] = 'None'
+        session['role'] = 'invitado'
+        
         return redirect(url_for('index'))
 
 
@@ -225,10 +217,11 @@ productos_collection = db_productos['productos']
 
 @app.route('/')
 def index():
-    if 'user_id' in session:
-        return render_template('index.html',in_session=g.in_session,name=g.name,role=g.role)
-    else:
-        return render_template('index.html',in_session=False)
+    if 'user_id' not in session:
+        session['username'] = 'Invitado'
+        session['email'] = 'None'
+        session['role'] = 'invitado'
+    return render_template('index.html')
 
 # -------------------------------------------------- RUTAS APIS ------------------------------------------------------ #
 
