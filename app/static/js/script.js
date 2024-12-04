@@ -15,8 +15,14 @@ async function obtenerProductos() {
 // Función para mostrar los productos en el DOM
 function mostrarProductos(productos) {
     const productosContainer = document.getElementById("productosContainer");
+    productosContainer.innerHTML = ""; // Limpiar el contenedor antes de agregar productos
 
     productos.forEach(producto => {
+        // Crear un enlace para redirigir a la página de detalles del producto
+        const enlaceProducto = document.createElement("a");
+        enlaceProducto.href = `/producto/${producto._id}`;
+        enlaceProducto.classList.add("producto-link");
+
         // Crear un div para cada producto
         const productoDiv = document.createElement("div");
         productoDiv.classList.add("producto");
@@ -45,8 +51,11 @@ function mostrarProductos(productos) {
         productoDiv.appendChild(precio);
         productoDiv.appendChild(descripcion);
 
-        // Añadir el div del producto al contenedor principal
-        productosContainer.appendChild(productoDiv);
+        // Añadir el div del producto dentro del enlace
+        enlaceProducto.appendChild(productoDiv);
+
+        // Añadir el enlace (que contiene el div del producto) al contenedor principal
+        productosContainer.appendChild(enlaceProducto);
     });
 }
 

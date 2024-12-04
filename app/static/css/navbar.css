@@ -32,9 +32,9 @@ header {
 
 /* Enlaces de navegación */
 nav {
-    flex-grow: 1;
     display: flex;
-    justify-content: center; /* Centra los enlaces de navegación */
+    justify-content: flex-end; /* Centra los enlaces de navegación */
+    flex-grow: 1;
 }
 
 .nav-links {

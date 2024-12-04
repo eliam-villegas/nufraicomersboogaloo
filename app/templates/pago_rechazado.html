@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Pago Rechazado</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/navbar.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/pago_rechazado.css') }}">
+</head>
+<body>
+
+    <div class="error-container">
+        <h1>¡Pago Rechazado!</h1>
+        <p>Lo sentimos, tu pago no pudo ser procesado. Por favor, verifica la información e inténtalo nuevamente.</p>
+
+        <!-- Detalles del error -->
+        <div class="error-details">
+            <p><strong>Motivo del Rechazo:</strong> {{ detalle.get("response_message", "No disponible") }}</p>
+            <p><strong>ID de la Transacción:</strong> {{ detalle.get("buy_order", "No disponible") }}</p>
+            <p><strong>Monto:</strong> ${{ detalle.get("amount", "No disponible") }}</p>
+            <p><strong>Fecha de Transacción:</strong> {{ detalle.get("transaction_date", "No disponible") }}</p>
+        </div>
+
+        <!-- Botones para intentar nuevamente o regresar -->
+        <div class="btn-container">
+            <a href="/carrito/ver" class="btn btn-try-again">Intentar Nuevamente</a>
+            <a href="{{ url_for('index') }}" class="btn btn-back">Volver a la Tienda</a>
+        </div>
+    </div>
+
+</body>
+</html>

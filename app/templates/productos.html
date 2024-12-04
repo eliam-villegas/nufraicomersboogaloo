@@ -1,32 +1,18 @@
 {% extends "header.html" %}
 
 {% block extra_css %}
-    <link rel="stylesheet" href="{{ url_for('static', filename='navbar.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='productos.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/productos.css') }}">
 {% endblock %}
 
 {% block content %}
-    <!-- Título del Catálogo de Productos -->
-    <h1>Catálogo de Productos</h1>
+ <!-- Título del Catálogo de Productos -->
+ <h1>Catálogo de Productos</h1>
 
-    <!-- Contenedor de productos donde se inyectarán los productos desde JavaScript -->
-    <div class="productos" id="productosContainer">
-        <!-- Los productos se añadirán dinámicamente aquí -->
-    </div>
+ <!-- Contenedor de productos donde se inyectarán los productos desde JavaScript -->
+ <div class="productos" id="productosContainer">
+     <!-- Los productos se añadirán dinámicamente aquí -->
+ </div>
 
-    <!-- Enlace al archivo JavaScript -->
-    <script src="{{ url_for('static', filename='script.js') }}"></script>
-
-    <script>
-        // Código JavaScript opcional para actualización dinámica
-        document.addEventListener("DOMContentLoaded", function() {
-            const username = "{{ username|safe }}";
-            if (username) {
-                const userLink = document.getElementById("user-link");
-                userLink.innerHTML = `<i class="icon-user"></i> ${username}`;
-            }
-        });
-    </script>
-{% endblock %}
-</body>
-</html>
+ <!-- Enlace al archivo JavaScript -->
+ <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+{% endblock content%}
