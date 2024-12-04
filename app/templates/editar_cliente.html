@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Editar Cliente</title>
+    <!-- Aquí van los estilos -->
+</head>
+
+<body>
+    <h1>Editar Cliente</h1>
+
+    <form method="POST">
+        <div>
+            <label for="nombre">Nombre:</label>
+            <input type="text" name="nombre" id="nombre" value="{{ cliente['name'] }}" required>
+        </div>
+
+        <div>
+            <label for="email">Correo Electrónico:</label>
+            <input type="email" name="email" id="email" value="{{ cliente['email'] }}" required>
+        </div>
+
+        <div>
+            <label for="direccion">Dirección:</label>
+            <input type="text" name="direccion" id="direccion" value="{{ cliente['address'] }}" required>
+        </div>
+
+        <div>
+            <label for="roles">Roles:</label>
+            <select name="roles" id="roles" multiple>
+                {% for role in roles_disponibles %}
+                    <option value="{{ role }}" {% if role in cliente['roles'] %} selected {% endif %}>{{ role }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div>
+            <button type="submit">Guardar Cambios</button>
+        </div>
+    </form>
+
+    <a href="{{ url_for('ver_clientes') }}">Volver a la lista de clientes</a>
+</body>
+
+</html>

@@ -10,23 +10,38 @@
 <body>
 
     <!-- Barra de navegación -->
-    <header>
-        <div class="nav-container">
-            <div class="logo">
-                <!-- Logo de la tienda -->
-                <a href="{{ url_for('index') }}">
-                    <img src="https://raw.githubusercontent.com/eliam-villegas/nufraicomers/refs/heads/main/imagenes/nufra_logo-removebg-preview.png" alt="Logo" class="logo-img">
-                </a>
-            </div>
-            <nav>
-                <ul class="nav-links">
-                    <li><a href="/productos">Tienda</a></li>
-                    <li><a href="/carrito"><i class="icon-cart"></i> Carrito</a></li>
-                    <li><a href="/usuario"><i class="icon-user"></i> Usuario</a></li>
-                </ul>
-            </nav>
+<header>
+    <div class="nav-container">
+        <div class="logo">
+            <a href="{{ url_for('index') }}">
+                <img src="https://raw.githubusercontent.com/eliam-villegas/nufraicomers/refs/heads/main/imagenes/nufra_logo-removebg-preview.png" alt="Logo" class="logo-img">
+            </a>
         </div>
-    </header>
+        <nav>
+            <ul class="nav-links">
+                <li><a href="/productos">Tienda</a></li>
+                <li><a href="/carrito"><i class="icon-cart"></i> Carrito</a></li>
+                <!-- Verifica si el usuario está logueado -->
+                {% if session.get('username') %}
+                    <!-- Menú desplegable con opciones -->
+                    <li class="dropdown">
+                        <a href="#" class="dropbtn">{{ session['username'] }}</a>
+                        <div class="dropdown-content">
+                            <a href="#">Perfil</a>
+                            <a href="#">Mis Pedidos</a>
+                            {% if session.get('role') == 'admin' %}
+                                <a href="#">Gestionar Productos</a>  <!-- Solo visible para administradores -->
+                            {% endif %}
+                            <a href="{{ url_for('logout') }}">Cerrar sesión</a>
+                        </div>
+                    </li>
+                {% else %}
+                    <li><a href="{{ url_for('login') }}">Iniciar sesión</a></li>
+                {% endif %}
+            </ul>
+        </nav>
+    </div>
+</header>
 
     <!-- Título del Catálogo de Productos -->
     <h1>Catálogo de Productos</h1>
@@ -38,3 +53,16 @@
 
     <!-- Enlace al archivo JavaScript -->
     <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/navbar.js') }}"></script>
+    <script>
+        // Código JavaScript opcional para actualización dinámica
+        document.addEventListener("DOMContentLoaded", function() {
+            const username = "{{ username|safe }}";
+            if (username) {
+                const userLink = document.getElementById("user-link");
+                userLink.innerHTML = `<i class="icon-user"></i> ${username}`;
+            }
+        });
+    </script>
+</body>
+</html>

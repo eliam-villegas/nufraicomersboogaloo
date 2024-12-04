@@ -3,3 +3,5 @@ pymongo==4.6.0
 psycopg2-binary==2.9.3
 python-dotenv
 transbank-sdk
+flask-jwt-extended
+Flask-Mail
