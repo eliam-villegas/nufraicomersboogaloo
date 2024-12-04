@@ -1,6 +1,6 @@
 from flask import Flask, render_template, jsonify, request, redirect, url_for, session
 
-from app.carrito import carrito_bp
+from carrito import carrito_bp
 from database import get_db
 from clientes import Database
 from carrito import carrito_bp
