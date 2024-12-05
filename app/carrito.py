@@ -80,6 +80,8 @@ def eliminar_del_carrito():
     session.modified = True
     return jsonify({"mensaje": "Producto eliminado del carrito"}), 200
 
+def vaciar_carrito():
+    return session.pop('carrito', None)
 def obtener_productos_comprados():
     """
     Obtiene los productos comprados desde el carrito de la sesión del usuario.

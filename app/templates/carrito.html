@@ -6,16 +6,18 @@
 
 {% block content %}
 <div class="main-container">
-    <main>
-        <h1>Carrito de Compras</h1>
-        <div id="carritoContainer"></div>
-    
-        <!-- Subtotal y botón de pago -->
-        <div class="subtotal">
-            <p><strong>Subtotal:</strong> $<span id="subtotal">0.00</span></p>
-            <button onclick="iniciarPago()">Ir a Pagar</button>
-        </div>
-    </main>
+    <div>
+        <main>
+            <h1>Carrito de Compras</h1>
+            <div id="carritoContainer"></div>
+        
+            <!-- Subtotal y botón de pago -->
+            <div class="subtotal">
+                <p><strong>Subtotal:</strong> $<span id="subtotal">0.00</span></p>
+                <button onclick="iniciarPago()">Ir a Pagar</button>
+            </div>
+        </main>
+    </div>
 </div>
 
 <script src="{{ url_for('static', filename='js/carrito-html.js') }}"></script>
