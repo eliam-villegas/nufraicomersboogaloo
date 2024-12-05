@@ -359,7 +359,7 @@ def ver_clientes():
     limit = 10  # Número de clientes por página
     offset = (page - 1) * limit  # Desplazamiento para la consulta
 
-    # Usamos el método `get_all_users` para obtener los usuarios con paginación
+    # Usamos el metodo `get_all_users` para obtener los usuarios con paginación
     clientes = db_cliente.get_all_users(limit, offset)
 
     # Contamos el total de clientes para calcular el número de páginas
