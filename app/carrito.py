@@ -79,3 +79,26 @@ def eliminar_del_carrito():
     session['carrito'] = [item for item in session['carrito'] if item['producto_id'] != producto_id]
     session.modified = True
     return jsonify({"mensaje": "Producto eliminado del carrito"}), 200
+
+def vaciar_carrito():
+    return session.pop('carrito', None)
+def obtener_productos_comprados():
+    """
+    Obtiene los productos comprados desde el carrito de la sesión del usuario.
+    Esta función solo se usa para el procesamiento post-compra, no para mostrar en el frontend.
+    """
+    carrito = []
+    # Verifica si el carrito existe en la sesión
+    if 'carrito' in session:
+        for item in session['carrito']:
+            # Recuperamos el producto de MongoDB usando el ID del producto
+            producto = productos_collection.find_one({"_id": ObjectId(item['producto_id'])})
+            if producto:
+                carrito.append({
+                    "producto_id": str(producto["_id"]),
+                    "nombre": producto["nombre"],
+                    "precio": producto["precio"],
+                    "cantidad": item["cantidad"],
+                    "subtotal": producto["precio"] * item["cantidad"]
+                })
+    return carrito  # Ahora se devuelve una lista de productos
