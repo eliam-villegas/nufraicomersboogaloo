@@ -1,6 +1,6 @@
 from flask import Flask, render_template, jsonify, request, redirect, url_for, session, g
 
-from carrito import carrito_bp
+from carrito import carrito_bp, obtener_productos_comprados
 from database import get_db
 from clientes import Database
 from bson.objectid import ObjectId
@@ -13,7 +13,7 @@ from database import get_db_postgres
 from transbank.webpay.webpay_plus.transaction import Transaction
 from transbank.common.integration_type import IntegrationType
 from transbank.error.transbank_error import TransbankError
-
+from correo_flask import enviar_correo_confirmacion, init_mail
 load_dotenv()
 
 app = Flask(__name__)
@@ -21,6 +21,7 @@ app.secret_key = 'e5f67a4efab7f3c3d5a82a4a27f601b8742e3edbd8ab6df1a68eac73c9d45e
 app.config["PERMANENT_SESSION_LIFETIME"] = timedelta(minutes=30)  # Duración de la sesión
 app.config['SESSION_TYPE'] = 'filesystem'
 app.register_blueprint(carrito_bp)
+mail = init_mail(app)
 
 @app.context_processor
 def inject_user():
@@ -86,6 +87,9 @@ def confirmar_pago():
         # Comprobar si la transacción fue aprobada
         if response.get('response_code') == 0:
             # Renderizar una página de éxito
+            productos_comprados = obtener_productos_comprados()
+            correo_destino = session.get('email')
+            enviar_correo_confirmacion(app, response, productos_comprados, correo_destino)
             return render_template("pago_exitoso.html", detalle=response)
         else:
             # Renderizar una página de rechazo o error
